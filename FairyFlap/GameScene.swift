@@ -133,9 +133,9 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         let spawnThenDelayForever = SKAction.repeatForever(spawnThenDelay)
         self.run(spawnThenDelayForever)
         
-        // spawn fairy dust clouds at random intervals
+        // spawn fairy dust clouds occasionally
         let spawnDust = SKAction.run(spawnDustCloud)
-        let dustDelay = SKAction.wait(forDuration: TimeInterval.random(in: 1.5...3.5))
+        let dustDelay = SKAction.wait(forDuration: TimeInterval.random(in: 10...18))
         let spawnDustThenDelay = SKAction.sequence([spawnDust, dustDelay])
         let spawnDustForever = SKAction.repeatForever(spawnDustThenDelay)
         self.run(spawnDustForever, withKey: "spawnDust")
@@ -302,7 +302,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         let margin: CGFloat = 12
         let stoneWidth = stoneTextureUp.size().width * 2.0
         
-        for case let stonePair as SKNode in stones.children {
+        for stonePair in stones.children {
             let pairX = stonePair.position.x
             
             if abs(cloudX - pairX) > stoneWidth / 2 + cloudRadius + margin {
