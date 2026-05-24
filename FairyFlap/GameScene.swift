@@ -2,8 +2,8 @@
 //  GameScene.swift
 //  FairyFlap
 //
-//  Created by Nate Murray on 6/2/14.
-//  Copyright (c) 2014 Fullstack.io. All rights reserved.
+//  Created by Jeff Hedrick on 5/24/2026.
+//  Copyright © 2026 Jeff Hedrick. All rights reserved. 
 //
 
 import SpriteKit
