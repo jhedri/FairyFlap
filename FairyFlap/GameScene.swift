@@ -9,7 +9,7 @@
 import SpriteKit
 
 /// The main gameplay scene. Handles the fairy, scrolling world, stone obstacles,
-/// scoring, collisions, and game-over / restart flow.
+/// scoring, collisions, and automatic return to home after death.
 class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     
     var fairy:SKSpriteNode!
@@ -20,11 +20,12 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     var backgroundMoving:SKNode!
     var moving:SKNode!
     var stones:SKNode!
-    var canRestart = Bool()
+    var dustClouds:SKNode!
     var scoreLabelNode:SKLabelNode!
     var highScoreLabelNode:SKLabelNode!
     var score = 0
     var groundHeight: CGFloat = 0
+    var isInvincible = false
     
     let backgroundScrollSpeed: CGFloat = 0.35
     
@@ -32,6 +33,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     let worldCategory: UInt32 = 1 << 1
     let stoneCategory: UInt32 = 1 << 2
     let scoreCategory: UInt32 = 1 << 3
+    let dustCategory: UInt32 = 1 << 4
     let verticalStoneGap: CGFloat = 150.0
     
     /// Called when the scene is first loaded from the .sks file. Clears any
@@ -43,8 +45,6 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     /// Sets up the entire game when the scene is presented: physics, parallax
     /// scrolling background, ground, fairy, score labels, and stone spawning.
     override func didMove(to view: SKView) {
-        
-        canRestart = true
         
         // setup physics
         self.physicsBody = nil
@@ -63,6 +63,8 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         self.addChild(moving)
         stones = SKNode()
         moving.addChild(stones)
+        dustClouds = SKNode()
+        moving.addChild(dustClouds)
         
         // ground (foreground — scrolls at full speed)
         let groundTexture = SKTexture(imageNamed: "land")
@@ -131,6 +133,13 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         let spawnThenDelayForever = SKAction.repeatForever(spawnThenDelay)
         self.run(spawnThenDelayForever)
         
+        // spawn fairy dust clouds at random intervals
+        let spawnDust = SKAction.run(spawnDustCloud)
+        let dustDelay = SKAction.wait(forDuration: TimeInterval.random(in: 1.5...3.5))
+        let spawnDustThenDelay = SKAction.sequence([spawnDust, dustDelay])
+        let spawnDustForever = SKAction.repeatForever(spawnDustThenDelay)
+        self.run(spawnDustForever, withKey: "spawnDust")
+        
         // setup our fairy
         let fairyTexture1 = SKTexture(imageNamed: "fairy-01")
         fairyTexture1.filteringMode = .nearest
@@ -152,7 +161,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         
         fairy.physicsBody?.categoryBitMask = fairyCategory
         fairy.physicsBody?.collisionBitMask = worldCategory | stoneCategory
-        fairy.physicsBody?.contactTestBitMask = worldCategory | stoneCategory
+        fairy.physicsBody?.contactTestBitMask = worldCategory | stoneCategory | dustCategory
         
         self.addChild(fairy)
         
@@ -180,7 +189,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         highScoreLabelNode.zPosition = 100
         highScoreLabelNode.fontSize = 18
         highScoreLabelNode.fontColor = SKColor(red: 1.0, green: 0.95, blue: 0.6, alpha: 1.0)
-        highScoreLabelNode.text = "Best: \(highScore)"
+        highScoreLabelNode.text = "Top Score: \(highScore)"
         self.addChild(highScoreLabelNode)
         
     }
@@ -230,121 +239,209 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         stones.addChild(stonePair)
     }
     
-    /// Resets the game to its starting state after the player chooses to replay:
-    /// repositions the fairy, clears stones, zeroes the score, and resumes scrolling.
-    func resetScene (){
-        // Move fairy to original position and reset velocity
-        fairy.position = CGPoint(x: self.frame.size.width / 2.5, y: self.frame.midY)
-        fairy.physicsBody?.velocity = CGVector( dx: 0, dy: 0 )
-        fairy.physicsBody?.collisionBitMask = worldCategory | stoneCategory
-        fairy.speed = 1.0
-        fairy.zRotation = 0.0
+    /// Creates a small fairy dust cloud at a random height. Collecting one makes
+    /// the fairy glow for five seconds. Skips spawning if no clear position exists.
+    func spawnDustCloud() {
+        let spawnX = self.frame.size.width + 20
+        let minY = groundHeight + 50
+        let maxY = self.frame.size.height - 50
         
-        // Remove all existing stones
-        stones.removeAllChildren()
+        var chosenY: CGFloat?
+        for _ in 0..<15 {
+            let candidateY = CGFloat.random(in: minY...maxY)
+            if !dustPositionOverlapsObstacle(x: spawnX, y: candidateY) {
+                chosenY = candidateY
+                break
+            }
+        }
+        guard let finalY = chosenY else { return }
         
-        // Reset _canRestart
-        canRestart = false
+        let cloud = SKNode()
+        cloud.position = CGPoint(x: spawnX, y: finalY)
+        cloud.zPosition = -5
         
-        // Reset score
-        score = 0
-        scoreLabelNode.text = String(score)
+        let dustColors: [SKColor] = [
+            SKColor(red: 1.0, green: 0.9, blue: 0.5, alpha: 0.8),
+            SKColor(red: 1.0, green: 0.75, blue: 0.9, alpha: 0.8),
+            SKColor(red: 0.85, green: 0.95, blue: 1.0, alpha: 0.8),
+            SKColor(red: 1.0, green: 1.0, blue: 0.85, alpha: 0.7)
+        ]
         
-        // Restart animation
-        moving.speed = 1
-        backgroundMoving.speed = backgroundScrollSpeed
+        let particleCount = Int.random(in: 4...7)
+        for _ in 0..<particleCount {
+            let radius = CGFloat.random(in: 2.5...5.0)
+            let dot = SKShapeNode(circleOfRadius: radius)
+            dot.fillColor = dustColors.randomElement()!
+            dot.strokeColor = .clear
+            dot.position = CGPoint(
+                x: CGFloat.random(in: -10...10),
+                y: CGFloat.random(in: -10...10)
+            )
+            cloud.addChild(dot)
+        }
+        
+        let twinkle = SKAction.repeatForever(SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.35, duration: TimeInterval.random(in: 0.3...0.5)),
+            SKAction.fadeAlpha(to: 0.95, duration: TimeInterval.random(in: 0.3...0.5))
+        ]))
+        cloud.run(twinkle)
+        
+        cloud.physicsBody = SKPhysicsBody(circleOfRadius: 14)
+        cloud.physicsBody?.isDynamic = false
+        cloud.physicsBody?.categoryBitMask = dustCategory
+        cloud.physicsBody?.contactTestBitMask = fairyCategory
+        cloud.physicsBody?.collisionBitMask = 0
+        
+        cloud.run(moveStonesAndRemove)
+        dustClouds.addChild(cloud)
     }
-    /// Displays the game-over overlay with the final score, best score,
-    /// and buttons to replay or return to the home screen.
-    func showDeathOverlay() {
-        let overlay = SKNode()
-        overlay.name = "deathOverlay"
-        overlay.zPosition = 200
-
-        // Score card background
-        let card = SKShapeNode(rectOf: CGSize(width: 260, height: 180), cornerRadius: 18)
-        card.fillColor = SKColor(white: 0, alpha: 0.55)
-        card.strokeColor = SKColor(white: 1, alpha: 0.3)
-        card.lineWidth = 2
-        card.position = CGPoint(x: self.frame.midX, y: self.frame.midY + 20)
-        overlay.addChild(card)
-
-        let finalScore = SKLabelNode(fontNamed: "MarkerFelt-Wide")
-        finalScore.text = "Score: \(score)"
-        finalScore.fontSize = 32
-        finalScore.fontColor = .white
-        finalScore.position = CGPoint(x: self.frame.midX, y: self.frame.midY + 55)
-        overlay.addChild(finalScore)
-
-        let best = UserDefaults.standard.integer(forKey: "highScore")
-        let bestLabel = SKLabelNode(fontNamed: "MarkerFelt-Wide")
-        bestLabel.text = "Best: \(best)"
-        bestLabel.fontSize = 22
-        bestLabel.fontColor = SKColor(red: 1.0, green: 0.95, blue: 0.6, alpha: 1.0)
-        bestLabel.position = CGPoint(x: self.frame.midX, y: self.frame.midY + 18)
-        overlay.addChild(bestLabel)
-
-        // Replay button
-        let replayBtn = SKShapeNode(rectOf: CGSize(width: 110, height: 50), cornerRadius: 25)
-        replayBtn.fillColor = SKColor(red: 0.2, green: 0.75, blue: 0.3, alpha: 1.0)
-        replayBtn.strokeColor = .white
-        replayBtn.lineWidth = 2
-        replayBtn.position = CGPoint(x: self.frame.midX - 65, y: self.frame.midY - 30)
-        replayBtn.name = "replayBtn"
-        overlay.addChild(replayBtn)
-
-        let replayLbl = SKLabelNode(fontNamed: "MarkerFelt-Wide")
-        replayLbl.text = "↩ Play"
-        replayLbl.fontSize = 20
-        replayLbl.fontColor = .white
-        replayLbl.verticalAlignmentMode = .center
-        replayLbl.name = "replayBtn"
-        replayBtn.addChild(replayLbl)
-
-        // Home button
-        let homeBtn = SKShapeNode(rectOf: CGSize(width: 110, height: 50), cornerRadius: 25)
-        homeBtn.fillColor = SKColor(red: 0.2, green: 0.45, blue: 0.85, alpha: 1.0)
-        homeBtn.strokeColor = .white
-        homeBtn.lineWidth = 2
-        homeBtn.position = CGPoint(x: self.frame.midX + 65, y: self.frame.midY - 30)
-        homeBtn.name = "homeBtn"
-        overlay.addChild(homeBtn)
-
-        let homeLbl = SKLabelNode(fontNamed: "MarkerFelt-Wide")
-        homeLbl.text = "⌂ Home"
-        homeLbl.fontSize = 20
-        homeLbl.fontColor = .white
-        homeLbl.verticalAlignmentMode = .center
-        homeLbl.name = "homeBtn"
-        homeBtn.addChild(homeLbl)
-
-        self.addChild(overlay)
+    
+    /// Returns true when a dust cloud at the given position would overlap a stone obstacle.
+    func dustPositionOverlapsObstacle(x cloudX: CGFloat, y cloudY: CGFloat) -> Bool {
+        let cloudRadius: CGFloat = 14
+        let margin: CGFloat = 12
+        let stoneWidth = stoneTextureUp.size().width * 2.0
+        
+        for case let stonePair as SKNode in stones.children {
+            let pairX = stonePair.position.x
+            
+            if abs(cloudX - pairX) > stoneWidth / 2 + cloudRadius + margin {
+                continue
+            }
+            
+            for case let stone as SKSpriteNode in stonePair.children {
+                guard stone.physicsBody?.categoryBitMask == stoneCategory else { continue }
+                
+                let stoneCenterY = stonePair.position.y + stone.position.y
+                let halfW = stone.size.width / 2
+                let halfH = stone.size.height / 2
+                
+                let dx = abs(cloudX - pairX)
+                let dy = abs(cloudY - stoneCenterY)
+                
+                if dx < halfW + cloudRadius + margin && dy < halfH + cloudRadius + margin {
+                    return true
+                }
+            }
+        }
+        return false
     }
-
+    
+    /// Applies a glowing aura to the fairy for five seconds. While glowing the
+    /// fairy is invincible and bounces off obstacles. Collecting another dust
+    /// cloud while glowing resets the timer.
+    func applyFairyGlow() {
+        fairy.removeAction(forKey: "fairyGlow")
+        fairy.childNode(withName: "glow")?.removeFromParent()
+        isInvincible = true
+        
+        let glowRadius = fairy.size.height * 0.55
+        let glow = SKShapeNode(circleOfRadius: glowRadius)
+        glow.name = "glow"
+        glow.fillColor = SKColor(red: 1.0, green: 0.85, blue: 0.3, alpha: 0.45)
+        glow.strokeColor = SKColor(red: 1.0, green: 0.95, blue: 0.6, alpha: 0.6)
+        glow.lineWidth = 2
+        glow.zPosition = -1
+        glow.glowWidth = 4
+        fairy.addChild(glow)
+        
+        let pulse = SKAction.repeatForever(SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.35, duration: 0.25),
+            SKAction.fadeAlpha(to: 0.85, duration: 0.25)
+        ]))
+        glow.run(pulse, withKey: "pulse")
+        
+        fairy.color = SKColor(red: 1.0, green: 0.95, blue: 0.7, alpha: 1.0)
+        fairy.colorBlendFactor = 0.55
+        
+        let removeGlow = SKAction.run {
+            glow.removeFromParent()
+            self.fairy.colorBlendFactor = 0
+            self.fairy.color = .white
+            self.isInvincible = false
+        }
+        fairy.run(SKAction.sequence([SKAction.wait(forDuration: 5.0), removeGlow]), withKey: "fairyGlow")
+    }
+    
+    /// Pushes the fairy away from an obstacle when invincible.
+    func bounceFairy(from contact: SKPhysicsContact) {
+        guard let body = fairy.physicsBody else { return }
+        
+        let awayFromObstacle: CGVector
+        if (contact.bodyA.categoryBitMask & fairyCategory) != 0 {
+            awayFromObstacle = CGVector(dx: -contact.contactNormal.dx, dy: -contact.contactNormal.dy)
+        } else {
+            awayFromObstacle = contact.contactNormal
+        }
+        
+        let bounceStrength: CGFloat = 9.0
+        body.velocity = CGVector(
+            dx: body.velocity.dx * 0.25 + awayFromObstacle.dx * bounceStrength,
+            dy: body.velocity.dy * 0.25 + awayFromObstacle.dy * bounceStrength
+        )
+        
+        let hitGround = (contact.bodyA.categoryBitMask & worldCategory) != 0
+            || (contact.bodyB.categoryBitMask & worldCategory) != 0
+        if hitGround && body.velocity.dy < 10 {
+            body.velocity.dy = 10
+        }
+    }
+    
     /// Transitions back to the home screen with a fade animation.
     func goHome() {
         let scene = HomeScene(size: self.size)
         scene.scaleMode = self.scaleMode
         self.view?.presentScene(scene, transition: SKTransition.fade(withDuration: 0.4))
     }
+    
+    /// Ends the run, saves scores, flashes the screen, and returns home.
+    func die() {
+        guard moving.speed > 0 else { return }
+        
+        moving.speed = 0
+        backgroundMoving.speed = 0
+        isInvincible = false
+        fairy.removeAction(forKey: "fairyGlow")
+        fairy.childNode(withName: "glow")?.removeFromParent()
+        fairy.colorBlendFactor = 0
+        fairy.color = .white
+        
+        fairy.physicsBody?.collisionBitMask = worldCategory
+        fairy.run(SKAction.rotate(byAngle: .pi * fairy.position.y * 0.01, duration: 1), completion: { self.fairy.speed = 0 })
+        
+        UserDefaults.standard.set(score, forKey: "lastScore")
+        let currentBest = UserDefaults.standard.integer(forKey: "highScore")
+        if score > currentBest {
+            UserDefaults.standard.set(score, forKey: "highScore")
+            highScoreLabelNode.text = "Top Score: \(score)"
+        }
+        
+        removeAction(forKey: "flash")
+        run(SKAction.sequence([SKAction.repeat(SKAction.sequence([SKAction.run({
+            self.backgroundColor = SKColor(red: 1, green: 0, blue: 0, alpha: 1.0)
+        }), SKAction.wait(forDuration: TimeInterval(0.05)), SKAction.run({
+            self.backgroundColor = self.sceneBackgroundColor
+        }), SKAction.wait(forDuration: TimeInterval(0.05))]), count: 4), SKAction.run({
+            self.goHome()
+        })]), withKey: "flash")
+    }
+    
+    /// Returns true when the fairy has moved completely outside the visible scene.
+    func fairyIsOffScreen() -> Bool {
+        let margin = max(fairy.size.width, fairy.size.height) / 2
+        let pos = fairy.position
+        return pos.x < -margin
+            || pos.x > frame.size.width + margin
+            || pos.y < -margin
+            || pos.y > frame.size.height + margin
+    }
 
-    /// Handles tap input: flaps the fairy during gameplay, or after death
-    /// restarts the game or navigates home depending on which button was tapped.
+    /// Handles tap input to flap the fairy during gameplay.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if moving.speed > 0 {
             for _ in touches {
                 fairy.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 fairy.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 13.5))
-            }
-        } else if canRestart {
-            guard let touch = touches.first else { return }
-            let location = touch.location(in: self)
-            let nodes = self.nodes(at: location)
-            if nodes.contains(where: { $0.name == "homeBtn" }) {
-                goHome()
-            } else {
-                self.childNode(withName: "deathOverlay")?.removeFromParent()
-                self.resetScene()
             }
         }
     }
@@ -355,48 +452,33 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         let dy = fairy.physicsBody!.velocity.dy
         let value = dy * (dy < 0 ? 0.003 : 0.001)
         fairy.zRotation = min( max(-1, value), 0.5 )
+        
+        if moving.speed > 0 && fairyIsOffScreen() {
+            die()
+        }
     }
     
     /// Physics contact handler. Increments score when the fairy passes through
-    /// a gap, or triggers death (stop scrolling, save high score, show overlay)
-    /// when the fairy hits a stone or the ground.
+    /// a gap, or triggers death (stop scrolling, save high score, red flash,
+    /// then return to the home screen) when the fairy hits a stone or the ground.
     func didBegin(_ contact: SKPhysicsContact) {
         if moving.speed > 0 {
-            if ( contact.bodyA.categoryBitMask & scoreCategory ) == scoreCategory || ( contact.bodyB.categoryBitMask & scoreCategory ) == scoreCategory {
+            if ( contact.bodyA.categoryBitMask & dustCategory ) == dustCategory || ( contact.bodyB.categoryBitMask & dustCategory ) == dustCategory {
+                let dustNode = (contact.bodyA.categoryBitMask & dustCategory) == dustCategory ? contact.bodyA.node : contact.bodyB.node
+                dustNode?.removeFromParent()
+                applyFairyGlow()
+            } else if ( contact.bodyA.categoryBitMask & scoreCategory ) == scoreCategory || ( contact.bodyB.categoryBitMask & scoreCategory ) == scoreCategory {
                 // Fairy has contact with score entity
                 score += 1
                 scoreLabelNode.text = String(score)
                 
                 // Add a little visual feedback for the score increment
                 scoreLabelNode.run(SKAction.sequence([SKAction.scale(to: 1.5, duration:TimeInterval(0.1)), SKAction.scale(to: 1.0, duration:TimeInterval(0.1))]))
+            } else if isInvincible {
+                bounceFairy(from: contact)
             } else {
-                
-                moving.speed = 0
-                backgroundMoving.speed = 0
-                
-                fairy.physicsBody?.collisionBitMask = worldCategory
-                fairy.run(SKAction.rotate(byAngle: .pi * fairy.position.y * 0.01, duration: 1), completion: { self.fairy.speed = 0 })
-                
-                
-                // Save high score
-                let currentBest = UserDefaults.standard.integer(forKey: "highScore")
-                if self.score > currentBest {
-                    UserDefaults.standard.set(self.score, forKey: "highScore")
-                    self.highScoreLabelNode.text = "Best: \(self.score)"
-                }
-
-                // Flash background if contact is detected
-                self.removeAction(forKey: "flash")
-                self.run(SKAction.sequence([SKAction.repeat(SKAction.sequence([SKAction.run({
-                    self.backgroundColor = SKColor(red: 1, green: 0, blue: 0, alpha: 1.0)
-                    }),SKAction.wait(forDuration: TimeInterval(0.05)), SKAction.run({
-                        self.backgroundColor = self.sceneBackgroundColor
-                        }), SKAction.wait(forDuration: TimeInterval(0.05))]), count:4), SKAction.run({
-                            self.canRestart = true
-                            self.showDeathOverlay()
-                            })]), withKey: "flash")
+                die()
             }
         }
     }
 }
-

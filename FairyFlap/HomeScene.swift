@@ -5,8 +5,8 @@
 
 import SpriteKit
 
-/// The title / menu scene shown at launch. Displays the high score, a play
-/// button, and an animated preview of the fairy over the scrolling forest.
+/// The title / menu scene shown at launch. Displays the last score, best score,
+/// a play button, and an animated preview of the fairy over the scrolling forest.
 class HomeScene: SKScene {
 
     let sceneBackgroundColor = SKColor(red: 120.0/255.0, green: 170.0/255.0, blue: 200.0/255.0, alpha: 1.0)
@@ -15,7 +15,7 @@ class HomeScene: SKScene {
     var moving: SKNode!
 
     /// Builds the home screen when the scene is presented: background layers,
-    /// animated fairy preview, and UI (title, high score, play button).
+    /// animated fairy preview, and UI (title, scores, play button).
     override func didMove(to view: SKView) {
         self.backgroundColor = sceneBackgroundColor
 
@@ -109,7 +109,7 @@ class HomeScene: SKScene {
 
     // MARK: - UI Labels & Button
 
-    /// Builds the home screen UI: title, high score label, pulsing play button,
+    /// Builds the home screen UI: title, last and best score labels, pulsing play button,
     /// and a blinking "tap anywhere to start" hint.
     private func setupUI() {
         // Title
@@ -129,13 +129,23 @@ class HomeScene: SKScene {
         self.addChild(shadowTitle)
         self.addChild(title)
 
-        // High score
+        // Last score
+        let lastScore = UserDefaults.standard.integer(forKey: "lastScore")
+        let lastLabel = SKLabelNode(fontNamed: "MarkerFelt-Wide")
+        lastLabel.text = "Last Score: \(lastScore)"
+        lastLabel.fontSize = 26
+        lastLabel.fontColor = .white
+        lastLabel.position = CGPoint(x: self.frame.midX, y: self.frame.height * 0.70)
+        lastLabel.zPosition = 20
+        self.addChild(lastLabel)
+
+        // Best score
         let highScore = UserDefaults.standard.integer(forKey: "highScore")
         let bestLabel = SKLabelNode(fontNamed: "MarkerFelt-Wide")
-        bestLabel.text = "Best: \(highScore)"
+        bestLabel.text = "Top Score: \(highScore)"
         bestLabel.fontSize = 26
         bestLabel.fontColor = SKColor(red: 1.0, green: 0.95, blue: 0.6, alpha: 1.0)
-        bestLabel.position = CGPoint(x: self.frame.midX, y: self.frame.height * 0.70)
+        bestLabel.position = CGPoint(x: self.frame.midX, y: self.frame.height * 0.63)
         bestLabel.zPosition = 20
         self.addChild(bestLabel)
 

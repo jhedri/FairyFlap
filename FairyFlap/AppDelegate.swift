@@ -12,33 +12,19 @@ import UIKit
 /// the SpriteKit scenes rather than here.
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-                            
-    var window: UIWindow?
 
     /// Called once at launch after the app finishes starting up.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         return true
     }
 
-    /// Called when the app is interrupted (e.g. phone call, home button).
-    /// Use this to pause gameplay if needed.
-    func applicationWillResignActive(_ application: UIApplication) {
+    /// Supplies the scene configuration declared in Info.plist.
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
-    /// Called when the app moves to the background. Use this to save state.
-    func applicationDidEnterBackground(_ application: UIApplication) {
-    }
-
-    /// Called when the app returns from the background to the foreground.
-    func applicationWillEnterForeground(_ application: UIApplication) {
-    }
-
-    /// Called when the app becomes active again after being inactive.
-    func applicationDidBecomeActive(_ application: UIApplication) {
-    }
-
-    /// Called just before the app is terminated. Use this for final cleanup.
-    func applicationWillTerminate(_ application: UIApplication) {
+    /// Called when the user dismisses a scene session.
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
     }
 
 }

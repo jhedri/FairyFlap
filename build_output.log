@@ -1,0 +1,510 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -scheme FairyFlap -project FairyFlap.xcodeproj -destination platform=iOS,id=00008150-001602E63C07801C -allowProvisioningUpdates -derivedDataPath /tmp/FairyFlapDerivedData clean build
+
+2026-05-23 18:55:30.161 xcodebuild[86506:4617848]  DVTDeviceOperation: Encountered a build number "" that is incompatible with DVTBuildVersion.
+2026-05-23 18:55:30.162 xcodebuild[86506:4617793] [MT] DVTDeviceOperation: Encountered a build number "" that is incompatible with DVTBuildVersion.
+2026-05-23 18:55:30.210 xcodebuild[86506:4617872]  DVTDeveloperAccountManager: Failed to load credentials for kaihedrick@icloud.com: Error Domain=DVTDeveloperAccountCredentialsError Code=0 "Invalid credentials in keychain for kaihedrick@icloud.com, missing Xcode-Token" UserInfo={NSLocalizedDescription=Invalid credentials in keychain for kaihedrick@icloud.com, missing Xcode-Token}
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+** CLEAN SUCCEEDED **
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'FairyFlap' in project 'FairyFlap' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Images.xcassets /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 42aeac63b85931847ef221133e7409c0
+Build description path: /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/XCBuildData/42aeac63b85931847ef221133e7409c0.xcbuilddata
+CreateBuildDirectory /tmp/FairyFlapDerivedData/Build/Products
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap.xcodeproj
+    builtin-create-build-directory /tmp/FairyFlapDerivedData/Build/Products
+
+CreateBuildDirectory /tmp/FairyFlapDerivedData/Build/Intermediates.noindex
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap.xcodeproj
+    builtin-create-build-directory /tmp/FairyFlapDerivedData/Build/Intermediates.noindex
+
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk /tmp/FairyFlapDerivedData/SDKStatCaches.noindex/iphoneos26.5-23F73-688ef53f1462e2c8f657fdc38a81448f32daed1954a7d5dd0789fcaf2a9bb78b.sdkstatcache
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -o /tmp/FairyFlapDerivedData/SDKStatCaches.noindex/iphoneos26.5-23F73-688ef53f1462e2c8f657fdc38a81448f32daed1954a7d5dd0789fcaf2a9bb78b.sdkstatcache
+
+CreateBuildDirectory /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap.xcodeproj
+    builtin-create-build-directory /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos
+
+CreateBuildDirectory /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap.xcodeproj
+    builtin-create-build-directory /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+CreateBuildDirectory /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap.xcodeproj
+    builtin-create-build-directory /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+CreateBuildDirectory /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphoneos
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap.xcodeproj
+    builtin-create-build-directory /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphoneos
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap-08ed4dc1ced555fc434bf836d50331e3-VFS-iphoneos/all-product-headers.yaml
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap.xcodeproj
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap-08ed4dc1ced555fc434bf836d50331e3-VFS-iphoneos/all-product-headers.yaml
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.DependencyMetadataFileList (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.DependencyMetadataFileList
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.hmap (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.hmap
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-all-target-headers.hmap (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-all-target-headers.hmap
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-own-target-headers.hmap (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-own-target-headers.hmap
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-generated-files.hmap (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-generated-files.hmap
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-project-headers.hmap (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-project-headers.hmap
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-all-non-framework-target-headers.hmap (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-all-non-framework-target-headers.hmap
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.DependencyStaticMetadataFileList (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.DependencyStaticMetadataFileList
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap_const_extract_protocols.json (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap_const_extract_protocols.json
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.LinkFileList (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.LinkFileList
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.SwiftFileList (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.SwiftFileList
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.SwiftConstValuesFileList (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.SwiftConstValuesFileList
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap-OutputFileMap.json (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap-OutputFileMap.json
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-DebugDylibPath-normal-arm64.txt (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-DebugDylibPath-normal-arm64.txt
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-DebugDylibInstallName-normal-arm64.txt (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-DebugDylibInstallName-normal-arm64.txt
+
+MkDir /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /bin/mkdir -p /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app
+
+WriteAuxiliaryFile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/Entitlements.plist (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    write-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/Entitlements.plist
+
+ProcessProductPackaging /Users/jeffhedrick/Library/Developer/Xcode/UserData/Provisioning\ Profiles/2e918a23-735d-4ecf-97fc-17dcdcb57af3.mobileprovision /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/embedded.mobileprovision (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-productPackagingUtility /Users/jeffhedrick/Library/Developer/Xcode/UserData/Provisioning\ Profiles/2e918a23-735d-4ecf-97fc-17dcdcb57af3.mobileprovision -o /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/embedded.mobileprovision
+
+ProcessProductPackaging "" /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.app.xcent (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    
+    Entitlements:
+    
+    {
+    "application-identifier" = "2X5XS2M8C2.io.fullstack.FairyFlap";
+    "com.apple.developer.team-identifier" = 2X5XS2M8C2;
+    "get-task-allow" = 1;
+}
+    
+    builtin-productPackagingUtility -entitlements -format xml -o /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.app.xcent
+
+ProcessProductPackagingDER /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.app.xcent /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.app.xcent.der (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /usr/bin/derq query -f xml -i /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.app.xcent -o /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.app.xcent.der --raw
+
+Ld /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/__preview.dylib normal (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios26.0 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -O0 -L/tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos -F/tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos -install_name @rpath/FairyFlap.debug.dylib -Xlinker -dead_strip -rdynamic -Xlinker -no_deduplicate -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap_dependency_info.dat -Xlinker -no_adhoc_codesign -o /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/__preview.dylib
+
+CpResource /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/GameScene.sks /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/GameScene.sks (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/GameScene.sks /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app
+
+GenerateTextureAtlas /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/fairy.atlasc /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/fairy.atlas (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/usr/bin/TextureAtlas /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/fairy.atlas /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app
+
+GenerateAssetSymbols /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Images.xcassets /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Assets.xcassets (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Images.xcassets /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Assets.xcassets --compile /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app --output-format human-readable-text --notices --warnings --export-dependency-info /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_dependencies --output-partial-info-plist /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_generated_info.plist --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 26.0 --platform iphoneos --bundle-identifier io.fullstack.FairyFlap --generate-swift-asset-symbols /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/GeneratedAssetSymbols.swift --generate-objc-asset-symbols /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/GeneratedAssetSymbols.h --generate-asset-symbol-index /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/* com.apple.actool.compilation-results */
+/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/GeneratedAssetSymbols.h
+/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/GeneratedAssetSymbols.swift
+
+
+CopyPNGFile /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/fairy.png /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/fairy.png (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/usr/bin/copypng -compress -strip-PNG-text /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/fairy.png /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/fairy.png
+
+MkDir /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_output/unthinned (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /bin/mkdir -p /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_output/unthinned
+
+MkDir /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_output/thinned (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /bin/mkdir -p /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_output/thinned
+
+CompileStoryboard /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/LaunchScreen.storyboard (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --errors --warnings --notices --module FairyFlap --output-partial-info-plist /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/LaunchScreen-SBPartialInfo.plist --auto-activate-custom-fonts --target-device iphone --target-device ipad --minimum-deployment-target 26.0 --output-format human-readable-text /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/LaunchScreen.storyboard --compilation-directory /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build
+
+CompileStoryboard /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Base.lproj/Main.storyboard (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --errors --warnings --notices --module FairyFlap --output-partial-info-plist /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Base.lproj/Main-SBPartialInfo.plist --auto-activate-custom-fonts --target-device iphone --target-device ipad --minimum-deployment-target 26.0 --output-format human-readable-text /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Base.lproj/Main.storyboard --compilation-directory /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Base.lproj
+
+CompileAssetCatalogVariant thinned /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Images.xcassets /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Assets.xcassets (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Images.xcassets /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Assets.xcassets --compile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_dependencies_thinned --output-partial-info-plist /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --filter-for-thinning-device-configuration iPhone18,1 --filter-for-device-os-version 26.5 --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 26.0 --platform iphoneos
+/* com.apple.actool.compilation-results */
+/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_generated_info.plist_thinned
+/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_output/thinned/AppIcon60x60@2x.png
+/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_output/thinned/AppIcon76x76@2x~ipad.png
+/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_output/thinned/Assets.car
+
+
+SwiftDriver FairyFlap normal arm64 com.apple.xcode.tools.swift.compiler (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name FairyFlap -Onone @/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.SwiftFileList -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios26.0 -g -module-cache-path /tmp/FairyFlapDerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /tmp/FairyFlapDerivedData/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos -F /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos -c -j14 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /tmp/FairyFlapDerivedData/SDKStatCaches.noindex/iphoneos26.5-23F73-688ef53f1462e2c8f657fdc38a81448f32daed1954a7d5dd0789fcaf2a9bb78b.sdkstatcache -output-file-map /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /tmp/FairyFlapDerivedData/ModuleCache.noindex -sdk-module-cache-path /tmp/FairyFlapDerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.swiftmodule -validate-clang-modules-once -clang-build-session-file /tmp/FairyFlapDerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap_const_extract_protocols.json -Xcc -iquote -Xcc /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-generated-files.hmap -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-own-target-headers.hmap -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-all-target-headers.hmap -Xcc -iquote -Xcc /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-project-headers.hmap -Xcc -I/tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/include -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources-normal/arm64 -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/arm64 -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap-Swift.h -working-directory /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master -experimental-emit-module-separately -disable-cmo
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_Builtin_stdbool-BFQB4TL8E8XACDMP7PUMKSJOI.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/ptrauth-IVFHVN8H4JQCBZYLIFRYLLJ7.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_Builtin_float-Z3720T0S0VXC0DQBISA1N22S.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_Builtin_stddef-I4G59W0IAPCFY34CDIHCLQTZ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_SwiftConcurrencyShims-54BPTZULZ4NFOSVZCF88P52KQ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/SwiftShims-7GI6DNDTUBXGLD5QHE71E8TX9.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_AvailabilityInternal-2DD289YJDUOJEBJKDAKGEFUWW.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/DeveloperToolsSupport-4LFXDQLIJFZ3SGL89F56A2BL5.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_Builtin_stdarg-17FQKY8DSWN3AKJW2TRT24UO5.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/ptrcheck-6Q4ID2U7TB592ABO1DQO16HLG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_DarwinFoundation1-EK79HIKRC10G80PTIZ658A43T.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_Builtin_limits-EX2M96YDYGVL5IL29UUFYQ52D.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_DarwinFoundation2-7AU9N17WHXD0VXSTNMVJ3SYR0.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/sys_types-BKPYGSPNN971IFKG9JJ6MDF2X.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_Builtin_tgmath-40PKRR1UOZED6JZULYSDPNM7G.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_Builtin_stdint-9LUDE23H66T1AW1JOYLKDGWD6.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_DarwinFoundation3-585LC7QPELRFADHW1T0TOSMRY.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_Builtin_stdatomic-10S29DVROL1HN7UH6GJ2PHLXH.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_Builtin_intrinsics-4RK1BOJIRYIVY56YZIDMFL0EC.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/_Builtin_inttypes-53BIPFJWRBJXTZAKSCDZQU4AQ.pcm
+
+LinkStoryboards (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --errors --warnings --notices --module FairyFlap --target-device iphone --target-device ipad --minimum-deployment-target 26.0 --output-format human-readable-text --link /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/LaunchScreen.storyboardc /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Base.lproj/Main.storyboardc
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/Darwin-25U3XSVE5SXM76XAH4WNFT3S8.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/simd-2LR9MWMXM3DUZFT6DXPLORJ16.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/MachO-CTLYR5UGRYAUZAIVVOOI8C1VB.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/ObjectiveC-8WVDFNX98J2HZPXMKL54JN1XN.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/os_object-1Y1YEL3OVJ0RJE2IFD50PGCIX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/os_workgroup-13NOTD7YT8J7A7T2NE7FWJRL5.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/Spatial-687BQCD737NGD4Y3HTI9V0YHL.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/Dispatch-6WYD3D1I4VHAONALZ1X7SYBRG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/XPC-CITSK6G57CZCWHEE72ZN29EV1.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/CoreFoundation-ARNZDB5RF4FHXO6PODEJ1GM7D.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/os-47J90AGIBKDEKIFDZ4MM7FCD5.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/Security-1H1AFFL9DYL153YT84X7AS06T.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/CoreGraphics-AKANRQCBIMG3LELSXORXFLTVL.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/CFNetwork-3R0BL79MUQ2VDUC3H6XVAP75I.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/Foundation-EUX2860DSBIOR90UXI8LX8R2V.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/ImageIO-DI1ITSYGKVC2K70JIA3W1ILFC.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/CoreText-5REUP898WIVFIKOU6H13T5TU3.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/IOSurface-1S871J2ZI1HI85STXFKL2GEZM.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/CoreData-831L68KVIZF2F97GN3LGIJB3J.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/UserNotifications-D0BF2VFKL2OQ66UAJI99XSIL0.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/Accessibility-A4D53OY7ORT6FBJERA12T162H.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/OSLog-77PWEGH72PA55Z97SC0QB54RW.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/UniformTypeIdentifiers-2ZX78TAHM4OTHWT8479LG8U8E.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/ModelIO-AU9TSNDQLZY3YMFRGIVO537VS.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/DataDetection-4E3PTXC1D5SSODUST6ZZ3CUH.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/Symbols-1BZ090MBQKYNDBAVK9TC61U1Z.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/CoreTransferable-5TKQNV4EZKSBPL2R5WZMOZP10.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/UIUtilities-F21EZK5CVM6QNE99042GGDLU9.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/FileProvider-7NIXGV1DVCOK9QZMA2FLUKIQV.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/Metal-3NLLBMW0A15Q3WMSY9J1EZNHX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/OpenGLES-7TJ38P8HGZF3U12UU5YKAT4WT.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/CoreVideo-ARR2XMCCNII4FAMA18455G0I4.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/CoreImage-24V9BPNZHEVWQD70FL5SA0FHG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/QuartzCore-5NL3YJPZF71UJVQ9FC1FSOL9I.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/SwiftUICore-BD1JMOLIO4GXN83ZAX76LLY6A.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/UIKit-4V5J55VDBSPHZPPG812T0CJFW.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/SwiftUI-A7B4S6C42IABWRHR5CS9QTE4.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/GLKit-EPAS7TF0PT2ERZO29G9YN18ZD.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /tmp/FairyFlapDerivedData/ModuleCache.noindex/SpriteKit-4I71IELUK7ZS6TRDSBPYVHG6P.pcm
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ FairyFlap (in target 'FairyFlap' from project 'FairyFlap')
+
+EmitSwiftModule normal arm64 (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    
+
+SwiftCompile normal arm64 Compiling\ HomeScene.swift /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/HomeScene.swift (in target 'FairyFlap' from project 'FairyFlap')
+
+SwiftCompile normal arm64 /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/HomeScene.swift (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    
+
+SwiftCompile normal arm64 Compiling\ GeneratedAssetSymbols.swift /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'FairyFlap' from project 'FairyFlap')
+SwiftCompile normal arm64 /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    
+
+SwiftCompile normal arm64 Compiling\ GameScene.swift /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/GameScene.swift (in target 'FairyFlap' from project 'FairyFlap')
+
+SwiftCompile normal arm64 /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/GameScene.swift (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    
+
+SwiftCompile normal arm64 Compiling\ AppDelegate.swift /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/AppDelegate.swift (in target 'FairyFlap' from project 'FairyFlap')
+
+SwiftCompile normal arm64 /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/AppDelegate.swift (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    
+
+SwiftCompile normal arm64 Compiling\ GameViewController.swift /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/GameViewController.swift (in target 'FairyFlap' from project 'FairyFlap')
+
+SwiftCompile normal arm64 /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/GameViewController.swift (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    
+
+SwiftDriverJobDiscovery normal arm64 Emitting module for FairyFlap (in target 'FairyFlap' from project 'FairyFlap')
+
+SwiftDriver\ Compilation\ Requirements FairyFlap normal arm64 com.apple.xcode.tools.swift.compiler (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name FairyFlap -Onone @/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.SwiftFileList -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios26.0 -g -module-cache-path /tmp/FairyFlapDerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /tmp/FairyFlapDerivedData/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos -F /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos -c -j14 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /tmp/FairyFlapDerivedData/SDKStatCaches.noindex/iphoneos26.5-23F73-688ef53f1462e2c8f657fdc38a81448f32daed1954a7d5dd0789fcaf2a9bb78b.sdkstatcache -output-file-map /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /tmp/FairyFlapDerivedData/ModuleCache.noindex -sdk-module-cache-path /tmp/FairyFlapDerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.swiftmodule -validate-clang-modules-once -clang-build-session-file /tmp/FairyFlapDerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap_const_extract_protocols.json -Xcc -iquote -Xcc /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-generated-files.hmap -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-own-target-headers.hmap -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-all-target-headers.hmap -Xcc -iquote -Xcc /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-project-headers.hmap -Xcc -I/tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/include -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources-normal/arm64 -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/arm64 -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap-Swift.h -working-directory /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master -experimental-emit-module-separately -disable-cmo
+
+SwiftMergeGeneratedHeaders /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/FairyFlap-Swift.h /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap-Swift.h (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-swiftHeaderTool -arch arm64 /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap-Swift.h -o /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/FairyFlap-Swift.h
+
+Copy /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.swiftmodule/arm64-apple-ios.swiftdoc /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.swiftdoc (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.swiftdoc /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.swiftmodule/arm64-apple-ios.swiftdoc
+
+Copy /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.swiftmodule/arm64-apple-ios.swiftmodule /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.swiftmodule (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.swiftmodule /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.swiftmodule/arm64-apple-ios.swiftmodule
+
+Copy /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.swiftmodule/arm64-apple-ios.abi.json /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.abi.json (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.abi.json /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.swiftmodule/arm64-apple-ios.abi.json
+
+Copy /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.swiftsourceinfo (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.swiftsourceinfo /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo
+
+SwiftDriverJobDiscovery normal arm64 Compiling AppDelegate.swift (in target 'FairyFlap' from project 'FairyFlap')
+
+SwiftDriverJobDiscovery normal arm64 Compiling GameViewController.swift (in target 'FairyFlap' from project 'FairyFlap')
+
+SwiftDriverJobDiscovery normal arm64 Compiling HomeScene.swift (in target 'FairyFlap' from project 'FairyFlap')
+
+SwiftDriverJobDiscovery normal arm64 Compiling GameScene.swift (in target 'FairyFlap' from project 'FairyFlap')
+
+LinkAssetCatalog /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Images.xcassets /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Assets.xcassets (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-linkAssetCatalog --thinned /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_output/thinned --thinned-dependencies /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_dependencies_thinned --thinned-info-plist-content /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_generated_info.plist_thinned --unthinned /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_output/unthinned --unthinned-dependencies /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_dependencies_unthinned --unthinned-info-plist-content /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_generated_info.plist_unthinned --output /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app --plist-output /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_generated_info.plist
+note: Emplaced /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/AppIcon60x60@2x.png (in target 'FairyFlap' from project 'FairyFlap')
+note: Emplaced /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/AppIcon76x76@2x~ipad.png (in target 'FairyFlap' from project 'FairyFlap')
+note: Emplaced /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/Assets.car (in target 'FairyFlap' from project 'FairyFlap')
+
+ProcessInfoPlistFile /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/Info.plist /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Info.plist (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-infoPlistUtility /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master/FairyFlap/Info.plist -producttype com.apple.product-type.application -genpkginfo /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/PkgInfo -expandbuildsettings -format binary -platform iphoneos -additionalcontentfile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/LaunchScreen-SBPartialInfo.plist -additionalcontentfile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Base.lproj/Main-SBPartialInfo.plist -additionalcontentfile /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/assetcatalog_generated_info.plist -requiredArchitecture arm64 -o /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/Info.plist
+
+SwiftDriverJobDiscovery normal arm64 Compiling GeneratedAssetSymbols.swift (in target 'FairyFlap' from project 'FairyFlap')
+
+SwiftDriver\ Compilation FairyFlap normal arm64 com.apple.xcode.tools.swift.compiler (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name FairyFlap -Onone @/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.SwiftFileList -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios26.0 -g -module-cache-path /tmp/FairyFlapDerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /tmp/FairyFlapDerivedData/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos -F /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos -c -j14 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /tmp/FairyFlapDerivedData/SDKStatCaches.noindex/iphoneos26.5-23F73-688ef53f1462e2c8f657fdc38a81448f32daed1954a7d5dd0789fcaf2a9bb78b.sdkstatcache -output-file-map /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /tmp/FairyFlapDerivedData/ModuleCache.noindex -sdk-module-cache-path /tmp/FairyFlapDerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.swiftmodule -validate-clang-modules-once -clang-build-session-file /tmp/FairyFlapDerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap_const_extract_protocols.json -Xcc -iquote -Xcc /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-generated-files.hmap -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-own-target-headers.hmap -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-all-target-headers.hmap -Xcc -iquote -Xcc /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-project-headers.hmap -Xcc -I/tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/include -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources-normal/arm64 -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources/arm64 -Xcc -I/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap-Swift.h -working-directory /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master -experimental-emit-module-separately -disable-cmo
+
+Ld /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap.debug.dylib normal (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios26.0 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -O0 -L/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphoneos -L/tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos -F/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphoneos -F/tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos -filelist /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.LinkFileList -install_name @rpath/FairyFlap.debug.dylib -Xlinker -rpath -Xlinker @executable_path/Frameworks -Xlinker -dead_strip -Xlinker -object_path_lto -Xlinker /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap_lto.o -rdynamic -Xlinker -no_deduplicate -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap_dependency_info.dat -fobjc-link-runtime -fprofile-instr-generate -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.swiftmodule @/tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap-linker-args.resp -Xlinker -alias -Xlinker _main -Xlinker ___debug_main_executable_dylib_entry_point -Xlinker -no_adhoc_codesign -o /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap.debug.dylib
+
+ConstructStubExecutorLinkFileList /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-ExecutorLinkFileList-normal-arm64.txt (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    construct-stub-executor-link-file-list /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap.debug.dylib /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/libPreviewsJITStubExecutor_no_swift_entry_point.a /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/libPreviewsJITStubExecutor.a --output /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-ExecutorLinkFileList-normal-arm64.txt
+note: Using stub executor library with Swift entry point. (in target 'FairyFlap' from project 'FairyFlap')
+
+GenerateDSYMFile /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app.dSYM /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap.debug.dylib (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/dsymutil /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap.debug.dylib -o /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app.dSYM
+
+Ld /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap normal (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios26.0 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -O0 -L/tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos -F/tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos -Xlinker -rpath -Xlinker @executable_path -Xlinker -rpath -Xlinker @executable_path/Frameworks -rdynamic -Xlinker -no_deduplicate -Xlinker -debug_variant -e ___debug_blank_executor_main -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_dylib -Xlinker /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-DebugDylibPath-normal-arm64.txt -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_instlnm -Xlinker /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-DebugDylibInstallName-normal-arm64.txt -Xlinker -filelist -Xlinker /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap-ExecutorLinkFileList-normal-arm64.txt /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap.debug.dylib -Xlinker -no_adhoc_codesign -o /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap
+
+GenerateDSYMFile /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app.dSYM /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/dsymutil -q /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap -o /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app.dSYM
+
+CopySwiftLibs /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-swiftStdLibTool --copy --verbose --sign 3C05DE63415FBEF4817885F29FAAF51931661626 --scan-executable /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap.debug.dylib --scan-folder /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/Frameworks --scan-folder /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/PlugIns --scan-folder /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/SystemExtensions --scan-folder /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/Extensions --platform iphoneos --toolchain /var/run/com.apple.security.cryptexd/mnt/com.apple.MobileAsset.MetalToolchain-v17.6.42.0.2wvQUC/Metal.xctoolchain --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+ExtractAppIntentsMetadata (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsmetadataprocessor --toolchain-dir /var/run/com.apple.security.cryptexd/mnt/com.apple.MobileAsset.MetalToolchain-v17.6.42.0.2wvQUC/Metal.xctoolchain --module-name FairyFlap --sdk-root /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk --xcode-version 17F42 --platform-family iOS --deployment-target 26.0 --bundle-identifier io.fullstack.FairyFlap --output /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app --target-triple arm64-apple-ios26.0 --binary-file /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap --dependency-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap_dependency_info.dat --stringsdata-file /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/ExtractedAppShortcutsMetadata.stringsdata --source-file-list /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.SwiftFileList --metadata-file-list /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.DependencyMetadataFileList --static-metadata-file-list /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.DependencyStaticMetadataFileList --swift-const-vals-list /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/Objects-normal/arm64/FairyFlap.SwiftConstValuesFileList --compile-time-extraction --deployment-aware-processing --validate-assistant-intents --no-app-shortcuts-localization
+2026-05-23 18:55:35.173 appintentsmetadataprocessor[86615:4618563] Starting appintentsmetadataprocessor export
+2026-05-23 18:55:35.175 appintentsmetadataprocessor[86615:4618563] warning: Metadata extraction skipped. No AppIntents.framework dependency found.
+
+AppIntentsSSUTraining (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsnltrainingprocessor --infoplist-path /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/Info.plist --temp-dir-path /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/ssu --bundle-id io.fullstack.FairyFlap --product-path /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app --extracted-metadata-path /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/Metadata.appintents --metadata-file-list /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.DependencyMetadataFileList --source-file /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/Info.plist --archive-ssu-assets
+2026-05-23 18:55:35.194 appintentsnltrainingprocessor[86616:4618570] Parsing options for appintentsnltrainingprocessor
+2026-05-23 18:55:35.195 appintentsnltrainingprocessor[86616:4618570] Starting AppIntents SSU YAML Generation
+2026-05-23 18:55:35.195 appintentsnltrainingprocessor[86616:4618570] No AppShortcuts found - Skipping.
+
+CodeSign /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap.debug.dylib (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    
+    Signing Identity:     "Apple Development: Jeffrey Hedrick (29DN7JFLM7)"
+    Provisioning Profile: "iOS Team Provisioning Profile: *"
+                          (2e918a23-735d-4ecf-97fc-17dcdcb57af3)
+    
+    /usr/bin/codesign --force --sign 3C05DE63415FBEF4817885F29FAAF51931661626 --timestamp\=none --generate-entitlement-der /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/FairyFlap.debug.dylib
+
+CodeSign /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/__preview.dylib (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    
+    Signing Identity:     "Apple Development: Jeffrey Hedrick (29DN7JFLM7)"
+    Provisioning Profile: "iOS Team Provisioning Profile: *"
+                          (2e918a23-735d-4ecf-97fc-17dcdcb57af3)
+    
+    /usr/bin/codesign --force --sign 3C05DE63415FBEF4817885F29FAAF51931661626 --timestamp\=none --generate-entitlement-der /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app/__preview.dylib
+
+CodeSign /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    
+    Signing Identity:     "Apple Development: Jeffrey Hedrick (29DN7JFLM7)"
+    Provisioning Profile: "iOS Team Provisioning Profile: *"
+                          (2e918a23-735d-4ecf-97fc-17dcdcb57af3)
+    
+    /usr/bin/codesign --force --sign 3C05DE63415FBEF4817885F29FAAF51931661626 --entitlements /tmp/FairyFlapDerivedData/Build/Intermediates.noindex/FairyFlap.build/Debug-iphoneos/FairyFlap.build/FairyFlap.app.xcent --timestamp\=none --generate-entitlement-der /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app
+
+RegisterExecutionPolicyException /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-RegisterExecutionPolicyException /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app
+
+Validate /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    builtin-validationUtility /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app -shallow-bundle -infoplist-subpath Info.plist
+
+Touch /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app (in target 'FairyFlap' from project 'FairyFlap')
+    cd /Users/jeffhedrick/Documents/FairyFlap/FairyFlap-master
+    /usr/bin/touch -c /tmp/FairyFlapDerivedData/Build/Products/Debug-iphoneos/FairyFlap.app
+
+** BUILD SUCCEEDED **
+

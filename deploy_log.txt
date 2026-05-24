@@ -1,0 +1,8 @@
+Name                      Hostname                                  Identifier                             State         Model                           
+-----------------------   ---------------------------------------   ------------------------------------   -----------   --------------------------------
+Jeff’s Apple Watch 8      Jeffs-AppleWatch-8.coredevice.local       E17F0CB6-96B9-5591-9691-36AE068458CD   unavailable   Apple Watch Series 8 (Watch6,17)
+Jeff’s iPhone 17 Pro      Jeffs-iPhone-17-Pro.coredevice.local      6BF33D22-8325-51CA-AFA9-C49CB637DE6E   connected     iPhone 17 Pro (iPhone18,1)      
+Karsten’s Apple Watch     Karstens-AppleWatch.coredevice.local      928E759C-683C-5185-AB18-90EB3A8FDB2D   unavailable   Watch6,12                       
+Karsten’s iPhone 16 Pro   Karstens-iPhone-16-Pro.coredevice.local   4D59560B-3C90-5E5F-8966-61B631207D29   unavailable   iPhone 16 Pro (iPhone17,1)      
+iPhone                    iPhone.coredevice.local                   C297D02C-D9E0-5379-BEF2-A521E4DB3BF1   unavailable   iPhone 14 Pro (iPhone15,2)      
+iPhone (3)                iPhone-3.coredevice.local                 613D67CA-0502-5503-9E02-5B50F61DB3C1   unavailable   iPhone 13 Pro (iPhone14,2)      

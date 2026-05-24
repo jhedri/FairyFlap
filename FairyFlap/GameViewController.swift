@@ -6,6 +6,11 @@
 import UIKit
 import SpriteKit
 
+/// SpriteKit view that opts out of tvOS-style focus handling on iPhone.
+class GameSKView: SKView {
+    override var canBecomeFocused: Bool { false }
+}
+
 /// Root view controller that hosts the SpriteKit view and presents the
 /// initial home scene when the app launches.
 class GameViewController: UIViewController {
@@ -14,9 +19,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let skView = self.view as! SKView
-        skView.showsFPS = true
-        skView.showsNodeCount = true
+        let skView = self.view as! GameSKView
         skView.ignoresSiblingOrder = true
 
         let scene = HomeScene(size: skView.bounds.size)
