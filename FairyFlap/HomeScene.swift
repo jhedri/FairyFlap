@@ -5,24 +5,36 @@
 
 import SpriteKit
 
+/// The title / menu scene shown at launch. Displays the high score, a play
+/// button, and an animated preview of the fairy over the scrolling forest.
 class HomeScene: SKScene {
 
-    let skyColor = SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
+    let sceneBackgroundColor = SKColor(red: 120.0/255.0, green: 170.0/255.0, blue: 200.0/255.0, alpha: 1.0)
+    let backgroundScrollSpeed: CGFloat = 0.35
+    var backgroundMoving: SKNode!
     var moving: SKNode!
 
+    /// Builds the home screen when the scene is presented: background layers,
+    /// animated fairy preview, and UI (title, high score, play button).
     override func didMove(to view: SKView) {
-        self.backgroundColor = skyColor
+        self.backgroundColor = sceneBackgroundColor
+
+        backgroundMoving = SKNode()
+        backgroundMoving.speed = backgroundScrollSpeed
+        self.addChild(backgroundMoving)
 
         moving = SKNode()
         self.addChild(moving)
 
         setupScrollingBackground()
-        setupBirdPreview()
+        setupFairyPreview()
         setupUI()
     }
 
     // MARK: - Scrolling Background
 
+    /// Creates the parallax scrolling ground (foreground) and forest (background).
+    /// The forest scrolls at 35% speed to give a sense of depth.
     private func setupScrollingBackground() {
         let groundTexture = SKTexture(imageNamed: "land")
         groundTexture.filteringMode = .nearest
@@ -42,39 +54,46 @@ class HomeScene: SKScene {
             moving.addChild(sprite)
         }
 
-        let skyTexture = SKTexture(imageNamed: "sky")
-        skyTexture.filteringMode = .nearest
+        let forestTexture = SKTexture(imageNamed: "forest")
+        forestTexture.filteringMode = .nearest
 
-        let moveSky = SKAction.moveBy(x: -skyTexture.size().width * 2.0, y: 0,
-                                      duration: TimeInterval(0.1 * skyTexture.size().width * 2.0))
-        let resetSky = SKAction.moveBy(x: skyTexture.size().width * 2.0, y: 0, duration: 0)
-        let skyLoop = SKAction.repeatForever(SKAction.sequence([moveSky, resetSky]))
+        let forestXScale: CGFloat = 2.0
+        let forestDisplayHeight = self.frame.size.height - groundH
+        let forestYScale = forestDisplayHeight / forestTexture.size().height
+        let forestTileWidth = forestTexture.size().width * forestXScale
 
-        let skyTileWidth = skyTexture.size().width * 2.0
-        let skyTileCount = Int(ceil(Double(self.frame.size.width) / Double(skyTileWidth))) + 3
-        for i in 0..<skyTileCount {
-            let sprite = SKSpriteNode(texture: skyTexture)
-            sprite.setScale(2.0)
+        let moveForest = SKAction.moveBy(x: -forestTileWidth, y: 0,
+                                         duration: TimeInterval(0.02 * forestTileWidth))
+        let resetForest = SKAction.moveBy(x: forestTileWidth, y: 0, duration: 0)
+        let forestLoop = SKAction.repeatForever(SKAction.sequence([moveForest, resetForest]))
+
+        let forestTileCount = Int(ceil(Double(self.frame.size.width) / Double(forestTileWidth))) + 3
+        for i in 0..<forestTileCount {
+            let sprite = SKSpriteNode(texture: forestTexture)
+            sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
+            sprite.xScale = forestXScale
+            sprite.yScale = forestYScale
             sprite.zPosition = -20
-            sprite.position = CGPoint(x: CGFloat(i) * sprite.size.width,
-                                      y: sprite.size.height / 2.0 + groundH)
-            sprite.run(skyLoop)
-            moving.addChild(sprite)
+            sprite.position = CGPoint(x: CGFloat(i) * forestTileWidth + forestTileWidth / 2.0, y: groundH)
+            sprite.run(forestLoop)
+            backgroundMoving.addChild(sprite)
         }
     }
 
-    // MARK: - Bird Preview
+    // MARK: - Fairy Preview
 
-    private func setupBirdPreview() {
-        let tex1 = SKTexture(imageNamed: "bird-01")
+    /// Adds an animated fairy in the center of the screen that flaps and bobs
+    /// up and down as a preview of the in-game character.
+    private func setupFairyPreview() {
+        let tex1 = SKTexture(imageNamed: "fairy-01")
         tex1.filteringMode = .nearest
-        let tex2 = SKTexture(imageNamed: "bird-02")
+        let tex2 = SKTexture(imageNamed: "fairy-02")
         tex2.filteringMode = .nearest
 
-        let bird = SKSpriteNode(texture: tex1)
-        bird.setScale(2.0)
-        bird.position = CGPoint(x: self.frame.midX, y: self.frame.midY + 30)
-        bird.zPosition = 10
+        let fairy = SKSpriteNode(texture: tex1)
+        fairy.setScale(2.0)
+        fairy.position = CGPoint(x: self.frame.midX, y: self.frame.midY + 30)
+        fairy.zPosition = 10
 
         let flap = SKAction.repeatForever(SKAction.animate(with: [tex1, tex2], timePerFrame: 0.2))
         let bob = SKAction.repeatForever(
@@ -83,13 +102,15 @@ class HomeScene: SKScene {
                 SKAction.moveBy(x: 0, y: -12, duration: 0.6)
             ])
         )
-        bird.run(flap)
-        bird.run(bob)
-        self.addChild(bird)
+        fairy.run(flap)
+        fairy.run(bob)
+        self.addChild(fairy)
     }
 
     // MARK: - UI Labels & Button
 
+    /// Builds the home screen UI: title, high score label, pulsing play button,
+    /// and a blinking "tap anywhere to start" hint.
     private func setupUI() {
         // Title
         let title = SKLabelNode(fontNamed: "MarkerFelt-Wide")
@@ -163,10 +184,12 @@ class HomeScene: SKScene {
 
     // MARK: - Touch
 
+    /// Any tap on the home screen starts the game.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         transitionToGame()
     }
 
+    /// Fades from the home screen into a new `GameScene`.
     private func transitionToGame() {
         let scene = GameScene(size: self.size)
         scene.scaleMode = self.scaleMode

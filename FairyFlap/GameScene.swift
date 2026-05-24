@@ -8,31 +8,40 @@
 
 import SpriteKit
 
+/// The main gameplay scene. Handles the fairy, scrolling world, stone obstacles,
+/// scoring, collisions, and game-over / restart flow.
 class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     
-    var bird:SKSpriteNode!
-    var skyColor:SKColor!
-    var pipeTextureUp:SKTexture!
-    var pipeTextureDown:SKTexture!
-    var movePipesAndRemove:SKAction!
+    var fairy:SKSpriteNode!
+    var sceneBackgroundColor:SKColor!
+    var stoneTextureUp:SKTexture!
+    var stoneTextureDown:SKTexture!
+    var moveStonesAndRemove:SKAction!
+    var backgroundMoving:SKNode!
     var moving:SKNode!
-    var pipes:SKNode!
+    var stones:SKNode!
     var canRestart = Bool()
     var scoreLabelNode:SKLabelNode!
     var highScoreLabelNode:SKLabelNode!
     var score = 0
     var groundHeight: CGFloat = 0
     
-    let birdCategory: UInt32 = 1 << 0
-    let worldCategory: UInt32 = 1 << 1
-    let pipeCategory: UInt32 = 1 << 2
-    let scoreCategory: UInt32 = 1 << 3
-    let verticalPipeGap: CGFloat = 150.0
+    let backgroundScrollSpeed: CGFloat = 0.35
     
+    let fairyCategory: UInt32 = 1 << 0
+    let worldCategory: UInt32 = 1 << 1
+    let stoneCategory: UInt32 = 1 << 2
+    let scoreCategory: UInt32 = 1 << 3
+    let verticalStoneGap: CGFloat = 150.0
+    
+    /// Called when the scene is first loaded from the .sks file. Clears any
+    /// default physics body so we can configure physics in `didMove(to:)`.
     override func sceneDidLoad() {
         self.physicsBody = nil
     }
 
+    /// Sets up the entire game when the scene is presented: physics, parallax
+    /// scrolling background, ground, fairy, score labels, and stone spawning.
     override func didMove(to view: SKView) {
         
         canRestart = true
@@ -42,16 +51,20 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         self.physicsWorld.gravity = CGVector( dx: 0.0, dy: -5.0 )
         self.physicsWorld.contactDelegate = self
         
-        // setup background color
-        skyColor = SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
-        self.backgroundColor = skyColor
+        // setup background color (matches forest sky at top)
+        sceneBackgroundColor = SKColor(red: 120.0/255.0, green: 170.0/255.0, blue: 200.0/255.0, alpha: 1.0)
+        self.backgroundColor = sceneBackgroundColor
+        
+        backgroundMoving = SKNode()
+        backgroundMoving.speed = backgroundScrollSpeed
+        self.addChild(backgroundMoving)
         
         moving = SKNode()
         self.addChild(moving)
-        pipes = SKNode()
-        moving.addChild(pipes)
+        stones = SKNode()
+        moving.addChild(stones)
         
-        // ground
+        // ground (foreground — scrolls at full speed)
         let groundTexture = SKTexture(imageNamed: "land")
         groundTexture.filteringMode = .nearest // shorter form for SKTextureFilteringMode.Nearest
         groundHeight = groundTexture.size().height * 2.0
@@ -69,73 +82,79 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
             moving.addChild(sprite)
         }
         
-        // skyline
-        let skyTexture = SKTexture(imageNamed: "sky")
-        skyTexture.filteringMode = .nearest
+        // forest background (scrolls slower via backgroundMoving.speed)
+        let forestTexture = SKTexture(imageNamed: "forest")
+        forestTexture.filteringMode = .nearest
         
-        let moveSkySprite = SKAction.moveBy(x: -skyTexture.size().width * 2.0, y: 0, duration: TimeInterval(0.1 * skyTexture.size().width * 2.0))
-        let resetSkySprite = SKAction.moveBy(x: skyTexture.size().width * 2.0, y: 0, duration: 0.0)
-        let moveSkySpritesForever = SKAction.repeatForever(SKAction.sequence([moveSkySprite,resetSkySprite]))
+        let forestXScale: CGFloat = 2.0
+        let forestDisplayHeight = self.frame.size.height - groundHeight
+        let forestYScale = forestDisplayHeight / forestTexture.size().height
+        let forestTileWidth = forestTexture.size().width * forestXScale
         
-        let skyTileWidth = skyTexture.size().width * 2.0
-        let skyTileCount = Int(ceil(Double(self.frame.size.width) / Double(skyTileWidth))) + 3
-        for i in 0 ..< skyTileCount {
+        let moveForestSprite = SKAction.moveBy(x: -forestTileWidth, y: 0, duration: TimeInterval(0.02 * forestTileWidth))
+        let resetForestSprite = SKAction.moveBy(x: forestTileWidth, y: 0, duration: 0.0)
+        let moveForestSpritesForever = SKAction.repeatForever(SKAction.sequence([moveForestSprite, resetForestSprite]))
+        
+        let forestTileCount = Int(ceil(Double(self.frame.size.width) / Double(forestTileWidth))) + 3
+        for i in 0 ..< forestTileCount {
             let i = CGFloat(i)
-            let sprite = SKSpriteNode(texture: skyTexture)
-            sprite.setScale(2.0)
+            let sprite = SKSpriteNode(texture: forestTexture)
+            sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
+            sprite.xScale = forestXScale
+            sprite.yScale = forestYScale
             sprite.zPosition = -20
-            sprite.position = CGPoint(x: i * sprite.size.width, y: sprite.size.height / 2.0 + groundTexture.size().height * 2.0)
-            sprite.run(moveSkySpritesForever)
-            moving.addChild(sprite)
+            sprite.position = CGPoint(x: i * forestTileWidth + forestTileWidth / 2.0, y: groundHeight)
+            sprite.run(moveForestSpritesForever)
+            backgroundMoving.addChild(sprite)
         }
         
-        // create the pipes textures
-        pipeTextureUp = SKTexture(imageNamed: "PipeUp")
-        pipeTextureUp.filteringMode = .nearest
-        pipeTextureDown = SKTexture(imageNamed: "PipeDown")
-        pipeTextureDown.filteringMode = .nearest
+        // create the stone textures
+        stoneTextureUp = SKTexture(imageNamed: "StoneUp")
+        stoneTextureUp.filteringMode = .nearest
+        stoneTextureDown = SKTexture(imageNamed: "StoneDown")
+        stoneTextureDown.filteringMode = .nearest
         
-        // create the pipes movement actions
-        let scaledPipeWidth = pipeTextureUp.size().width * 2.0
-        let distanceToMove = CGFloat(self.frame.size.width + 2.0 * scaledPipeWidth)
+        // create the stones movement actions
+        let scaledStoneWidth = stoneTextureUp.size().width * 2.0
+        let distanceToMove = CGFloat(self.frame.size.width + 2.0 * scaledStoneWidth)
         let duration = TimeInterval(0.01 * distanceToMove)
-        let movePipes = SKAction.moveBy(x: -distanceToMove, y: 0.0, duration: duration)
+        let moveStones = SKAction.moveBy(x: -distanceToMove, y: 0.0, duration: duration)
         let waitBeforeFade = SKAction.wait(forDuration: duration * 0.7)
         let fadeOut = SKAction.fadeOut(withDuration: duration * 0.3)
-        let moveAndFade = SKAction.group([movePipes, SKAction.sequence([waitBeforeFade, fadeOut])])
-        movePipesAndRemove = SKAction.sequence([moveAndFade, SKAction.removeFromParent()])
+        let moveAndFade = SKAction.group([moveStones, SKAction.sequence([waitBeforeFade, fadeOut])])
+        moveStonesAndRemove = SKAction.sequence([moveAndFade, SKAction.removeFromParent()])
         
-        // spawn the pipes
-        let spawn = SKAction.run(spawnPipes)
+        // spawn the stones
+        let spawn = SKAction.run(spawnStones)
         let delay = SKAction.wait(forDuration: TimeInterval(2.0))
         let spawnThenDelay = SKAction.sequence([spawn, delay])
         let spawnThenDelayForever = SKAction.repeatForever(spawnThenDelay)
         self.run(spawnThenDelayForever)
         
-        // setup our bird
-        let birdTexture1 = SKTexture(imageNamed: "bird-01")
-        birdTexture1.filteringMode = .nearest
-        let birdTexture2 = SKTexture(imageNamed: "bird-02")
-        birdTexture2.filteringMode = .nearest
+        // setup our fairy
+        let fairyTexture1 = SKTexture(imageNamed: "fairy-01")
+        fairyTexture1.filteringMode = .nearest
+        let fairyTexture2 = SKTexture(imageNamed: "fairy-02")
+        fairyTexture2.filteringMode = .nearest
         
-        let anim = SKAction.animate(with: [birdTexture1, birdTexture2], timePerFrame: 0.2)
+        let anim = SKAction.animate(with: [fairyTexture1, fairyTexture2], timePerFrame: 0.2)
         let flap = SKAction.repeatForever(anim)
         
-        bird = SKSpriteNode(texture: birdTexture1)
-        bird.setScale(1.5)
-        bird.position = CGPoint(x: self.frame.size.width * 0.35, y:self.frame.size.height * 0.6)
-        bird.run(flap)
+        fairy = SKSpriteNode(texture: fairyTexture1)
+        fairy.setScale(1.5)
+        fairy.position = CGPoint(x: self.frame.size.width * 0.35, y:self.frame.size.height * 0.6)
+        fairy.run(flap)
         
         
-        bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height / 2.0)
-        bird.physicsBody?.isDynamic = true
-        bird.physicsBody?.allowsRotation = false
+        fairy.physicsBody = SKPhysicsBody(circleOfRadius: fairy.size.height / 2.0)
+        fairy.physicsBody?.isDynamic = true
+        fairy.physicsBody?.allowsRotation = false
         
-        bird.physicsBody?.categoryBitMask = birdCategory
-        bird.physicsBody?.collisionBitMask = worldCategory | pipeCategory
-        bird.physicsBody?.contactTestBitMask = worldCategory | pipeCategory
+        fairy.physicsBody?.categoryBitMask = fairyCategory
+        fairy.physicsBody?.collisionBitMask = worldCategory | stoneCategory
+        fairy.physicsBody?.contactTestBitMask = worldCategory | stoneCategory
         
-        self.addChild(bird)
+        self.addChild(fairy)
         
         // create the ground
         let ground = SKNode()
@@ -166,61 +185,63 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         
     }
     
-    func spawnPipes() {
-        let pipePair = SKNode()
-        pipePair.position = CGPoint( x: self.frame.size.width + pipeTextureUp.size().width * 2, y: 0 )
-        pipePair.zPosition = -10
+    /// Creates a new pair of top/bottom stone obstacles with a random gap height,
+    /// plus an invisible score trigger between them, and scrolls them off-screen.
+    func spawnStones() {
+        let stonePair = SKNode()
+        stonePair.position = CGPoint( x: self.frame.size.width + stoneTextureUp.size().width * 2, y: 0 )
+        stonePair.zPosition = -10
         
-        let pipeUpHeight = pipeTextureUp.size().height * 2.0
-        // maxPipeY keeps the pipe bottom flush with the ground; vary downward for difficulty
-        let maxPipeY = groundHeight + pipeUpHeight / 2
+        let stoneUpHeight = stoneTextureUp.size().height * 2.0
+        // maxStoneY keeps the stone bottom flush with the ground; vary downward for difficulty
+        let maxStoneY = groundHeight + stoneUpHeight / 2
         let variation = UInt32(self.frame.size.height / 4)
-        let y = CGFloat(UInt32.random(in: 0..<variation)) + (maxPipeY - CGFloat(variation))
+        let y = CGFloat(UInt32.random(in: 0..<variation)) + (maxStoneY - CGFloat(variation))
         
-        let pipeDown = SKSpriteNode(texture: pipeTextureDown)
-        pipeDown.setScale(2.0)
-        pipeDown.position = CGPoint(x: 0.0, y: y + pipeDown.size.height + verticalPipeGap)
+        let stoneDown = SKSpriteNode(texture: stoneTextureDown)
+        stoneDown.setScale(2.0)
+        stoneDown.position = CGPoint(x: 0.0, y: y + stoneDown.size.height + verticalStoneGap)
         
+        stoneDown.physicsBody = SKPhysicsBody(rectangleOf: stoneDown.size)
+        stoneDown.physicsBody?.isDynamic = false
+        stoneDown.physicsBody?.categoryBitMask = stoneCategory
+        stoneDown.physicsBody?.contactTestBitMask = fairyCategory
+        stonePair.addChild(stoneDown)
         
-        pipeDown.physicsBody = SKPhysicsBody(rectangleOf: pipeDown.size)
-        pipeDown.physicsBody?.isDynamic = false
-        pipeDown.physicsBody?.categoryBitMask = pipeCategory
-        pipeDown.physicsBody?.contactTestBitMask = birdCategory
-        pipePair.addChild(pipeDown)
+        let stoneUp = SKSpriteNode(texture: stoneTextureUp)
+        stoneUp.setScale(2.0)
+        stoneUp.position = CGPoint(x: 0.0, y: y)
         
-        let pipeUp = SKSpriteNode(texture: pipeTextureUp)
-        pipeUp.setScale(2.0)
-        pipeUp.position = CGPoint(x: 0.0, y: y)
-        
-        pipeUp.physicsBody = SKPhysicsBody(rectangleOf: pipeUp.size)
-        pipeUp.physicsBody?.isDynamic = false
-        pipeUp.physicsBody?.categoryBitMask = pipeCategory
-        pipeUp.physicsBody?.contactTestBitMask = birdCategory
-        pipePair.addChild(pipeUp)
+        stoneUp.physicsBody = SKPhysicsBody(rectangleOf: stoneUp.size)
+        stoneUp.physicsBody?.isDynamic = false
+        stoneUp.physicsBody?.categoryBitMask = stoneCategory
+        stoneUp.physicsBody?.contactTestBitMask = fairyCategory
+        stonePair.addChild(stoneUp)
         
         let contactNode = SKNode()
-        contactNode.position = CGPoint( x: pipeDown.size.width + bird.size.width / 2, y: self.frame.midY )
-        contactNode.physicsBody = SKPhysicsBody(rectangleOf: CGSize( width: pipeUp.size.width, height: self.frame.size.height ))
+        contactNode.position = CGPoint( x: stoneDown.size.width + fairy.size.width / 2, y: self.frame.midY )
+        contactNode.physicsBody = SKPhysicsBody(rectangleOf: CGSize( width: stoneUp.size.width, height: self.frame.size.height ))
         contactNode.physicsBody?.isDynamic = false
         contactNode.physicsBody?.categoryBitMask = scoreCategory
-        contactNode.physicsBody?.contactTestBitMask = birdCategory
-        pipePair.addChild(contactNode)
+        contactNode.physicsBody?.contactTestBitMask = fairyCategory
+        stonePair.addChild(contactNode)
         
-        pipePair.run(movePipesAndRemove)
-        pipes.addChild(pipePair)
-        
+        stonePair.run(moveStonesAndRemove)
+        stones.addChild(stonePair)
     }
     
+    /// Resets the game to its starting state after the player chooses to replay:
+    /// repositions the fairy, clears stones, zeroes the score, and resumes scrolling.
     func resetScene (){
-        // Move bird to original position and reset velocity
-        bird.position = CGPoint(x: self.frame.size.width / 2.5, y: self.frame.midY)
-        bird.physicsBody?.velocity = CGVector( dx: 0, dy: 0 )
-        bird.physicsBody?.collisionBitMask = worldCategory | pipeCategory
-        bird.speed = 1.0
-        bird.zRotation = 0.0
+        // Move fairy to original position and reset velocity
+        fairy.position = CGPoint(x: self.frame.size.width / 2.5, y: self.frame.midY)
+        fairy.physicsBody?.velocity = CGVector( dx: 0, dy: 0 )
+        fairy.physicsBody?.collisionBitMask = worldCategory | stoneCategory
+        fairy.speed = 1.0
+        fairy.zRotation = 0.0
         
-        // Remove all existing pipes
-        pipes.removeAllChildren()
+        // Remove all existing stones
+        stones.removeAllChildren()
         
         // Reset _canRestart
         canRestart = false
@@ -231,7 +252,10 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         
         // Restart animation
         moving.speed = 1
+        backgroundMoving.speed = backgroundScrollSpeed
     }
+    /// Displays the game-over overlay with the final score, best score,
+    /// and buttons to replay or return to the home screen.
     func showDeathOverlay() {
         let overlay = SKNode()
         overlay.name = "deathOverlay"
@@ -297,17 +321,20 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         self.addChild(overlay)
     }
 
+    /// Transitions back to the home screen with a fade animation.
     func goHome() {
         let scene = HomeScene(size: self.size)
         scene.scaleMode = self.scaleMode
         self.view?.presentScene(scene, transition: SKTransition.fade(withDuration: 0.4))
     }
 
+    /// Handles tap input: flaps the fairy during gameplay, or after death
+    /// restarts the game or navigates home depending on which button was tapped.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if moving.speed > 0 {
             for _ in touches {
-                bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 13.5))
+                fairy.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                fairy.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 13.5))
             }
         } else if canRestart {
             guard let touch = touches.first else { return }
@@ -322,17 +349,21 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         }
     }
     
+    /// Called every frame. Tilts the fairy sprite based on vertical velocity
+    /// so it pitches up while rising and down while falling.
     override func update(_ currentTime: TimeInterval) {
-        /* Called before each frame is rendered */
-        let dy = bird.physicsBody!.velocity.dy
+        let dy = fairy.physicsBody!.velocity.dy
         let value = dy * (dy < 0 ? 0.003 : 0.001)
-        bird.zRotation = min( max(-1, value), 0.5 )
+        fairy.zRotation = min( max(-1, value), 0.5 )
     }
     
+    /// Physics contact handler. Increments score when the fairy passes through
+    /// a gap, or triggers death (stop scrolling, save high score, show overlay)
+    /// when the fairy hits a stone or the ground.
     func didBegin(_ contact: SKPhysicsContact) {
         if moving.speed > 0 {
             if ( contact.bodyA.categoryBitMask & scoreCategory ) == scoreCategory || ( contact.bodyB.categoryBitMask & scoreCategory ) == scoreCategory {
-                // Bird has contact with score entity
+                // Fairy has contact with score entity
                 score += 1
                 scoreLabelNode.text = String(score)
                 
@@ -341,9 +372,10 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
             } else {
                 
                 moving.speed = 0
+                backgroundMoving.speed = 0
                 
-                bird.physicsBody?.collisionBitMask = worldCategory
-                bird.run(SKAction.rotate(byAngle: .pi * bird.position.y * 0.01, duration: 1), completion: { self.bird.speed = 0 })
+                fairy.physicsBody?.collisionBitMask = worldCategory
+                fairy.run(SKAction.rotate(byAngle: .pi * fairy.position.y * 0.01, duration: 1), completion: { self.fairy.speed = 0 })
                 
                 
                 // Save high score
@@ -358,7 +390,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
                 self.run(SKAction.sequence([SKAction.repeat(SKAction.sequence([SKAction.run({
                     self.backgroundColor = SKColor(red: 1, green: 0, blue: 0, alpha: 1.0)
                     }),SKAction.wait(forDuration: TimeInterval(0.05)), SKAction.run({
-                        self.backgroundColor = self.skyColor
+                        self.backgroundColor = self.sceneBackgroundColor
                         }), SKAction.wait(forDuration: TimeInterval(0.05))]), count:4), SKAction.run({
                             self.canRestart = true
                             self.showDeathOverlay()
