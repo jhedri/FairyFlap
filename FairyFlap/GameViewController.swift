@@ -6,25 +6,33 @@
 import UIKit
 import SpriteKit
 
-/// SpriteKit view that opts out of tvOS-style focus handling on iPhone.
-class GameSKView: SKView {
-    override var canBecomeFocused: Bool { false }
-}
-
 /// Root view controller that hosts the SpriteKit view and presents the
 /// initial home scene when the app launches.
 class GameViewController: UIViewController {
+
+    private let skView = SKView()
+    private var didPresentInitialScene = false
 
     /// Configures the SpriteKit view and presents `HomeScene` as the first screen.
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let skView = self.view as! GameSKView
+        skView.frame = view.bounds
+        skView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         skView.ignoresSiblingOrder = true
+        view.addSubview(skView)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        guard !didPresentInitialScene else { return }
+        guard skView.bounds.width > 0, skView.bounds.height > 0 else { return }
 
         let scene = HomeScene(size: skView.bounds.size)
         scene.scaleMode = .resizeFill
         skView.presentScene(scene)
+        didPresentInitialScene = true
     }
 
     /// Allows the game to rotate to any orientation.
