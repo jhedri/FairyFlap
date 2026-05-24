@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "FB4D74DE-55B3-414A-9D6D-7BEDC22E9C7E",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:FairyFlap.xcodeproj",
+      "identifier" : "437451F9193D163700654986",
+      "name" : "FairyFlap"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:FairyFlap.xcodeproj",
+        "identifier" : "4374520F193D163800654986",
+        "name" : "FairyFlapTests"
+      }
+    }
+  ],
+  "version" : 1
+}
