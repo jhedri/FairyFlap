@@ -110,6 +110,9 @@ class HomeScene: SKScene {
         title.fontColor = .white
         title.position = CGPoint(x: self.frame.midX, y: self.frame.height * 0.78)
         title.zPosition = 20
+        title.isAccessibilityElement = true
+        title.accessibilityIdentifier = AccessibilityID.homeTitle
+        title.accessibilityLabel = "Fairy Flap"
 
         let shadowTitle = SKLabelNode(fontNamed: "MarkerFelt-Wide")
         shadowTitle.text = "Fairy Flap"
@@ -128,6 +131,8 @@ class HomeScene: SKScene {
         lastLabel.fontColor = .white
         lastLabel.position = CGPoint(x: self.frame.midX, y: self.frame.height * 0.70)
         lastLabel.zPosition = 20
+        lastLabel.isAccessibilityElement = true
+        lastLabel.accessibilityIdentifier = AccessibilityID.lastScore
         self.addChild(lastLabel)
 
         // Best score
@@ -138,6 +143,8 @@ class HomeScene: SKScene {
         bestLabel.fontColor = SKColor(red: 1.0, green: 0.95, blue: 0.6, alpha: 1.0)
         bestLabel.position = CGPoint(x: self.frame.midX, y: self.frame.height * 0.63)
         bestLabel.zPosition = 20
+        bestLabel.isAccessibilityElement = true
+        bestLabel.accessibilityIdentifier = AccessibilityID.topScore
         self.addChild(bestLabel)
 
         // Play button background
@@ -148,6 +155,9 @@ class HomeScene: SKScene {
         buttonBg.position = CGPoint(x: self.frame.midX, y: self.frame.height * 0.25)
         buttonBg.zPosition = 20
         buttonBg.name = "playButton"
+        buttonBg.isAccessibilityElement = true
+        buttonBg.accessibilityIdentifier = AccessibilityID.playButton
+        buttonBg.accessibilityLabel = "Play"
         self.addChild(buttonBg)
 
         let playLabel = SKLabelNode(fontNamed: "MarkerFelt-Wide")
@@ -158,6 +168,7 @@ class HomeScene: SKScene {
         playLabel.position = .zero
         playLabel.zPosition = 1
         playLabel.name = "playButton"
+        playLabel.isAccessibilityElement = false
         buttonBg.addChild(playLabel)
 
         // Pulse the button
@@ -174,6 +185,9 @@ class HomeScene: SKScene {
         hint.fontColor = SKColor(white: 1.0, alpha: 0.7)
         hint.position = CGPoint(x: self.frame.midX, y: self.frame.height * 0.16)
         hint.zPosition = 20
+        hint.isAccessibilityElement = true
+        hint.accessibilityIdentifier = AccessibilityID.tapHint
+        hint.accessibilityLabel = "tap anywhere to start"
 
         let blink = SKAction.repeatForever(SKAction.sequence([
             SKAction.fadeAlpha(to: 0.2, duration: 0.7),

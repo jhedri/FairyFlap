@@ -182,6 +182,9 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         scoreLabelNode.position = CGPoint( x: self.frame.midX, y: 3 * self.frame.size.height / 4 )
         scoreLabelNode.zPosition = 100
         scoreLabelNode.text = String(score)
+        scoreLabelNode.isAccessibilityElement = true
+        scoreLabelNode.accessibilityIdentifier = AccessibilityID.scoreLabel
+        scoreLabelNode.accessibilityLabel = String(score)
         self.addChild(scoreLabelNode)
 
         // High score label (top-right)
@@ -667,12 +670,14 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
                 spikeNode?.removeFromParent()
                 score += 5
                 scoreLabelNode.text = String(score)
+                scoreLabelNode.accessibilityLabel = String(score)
                 scoreLabelNode.run(SKAction.sequence([SKAction.scale(to: 1.5, duration:TimeInterval(0.1)), SKAction.scale(to: 1.0, duration:TimeInterval(0.1))]))
                 applyUnicornTransform()
             } else if ( contact.bodyA.categoryBitMask & scoreCategory ) == scoreCategory || ( contact.bodyB.categoryBitMask & scoreCategory ) == scoreCategory {
                 // Fairy has contact with score entity
                 score += 1
                 scoreLabelNode.text = String(score)
+                scoreLabelNode.accessibilityLabel = String(score)
                 
                 // Add a little visual feedback for the score increment
                 scoreLabelNode.run(SKAction.sequence([SKAction.scale(to: 1.5, duration:TimeInterval(0.1)), SKAction.scale(to: 1.0, duration:TimeInterval(0.1))]))

@@ -17,6 +17,11 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if ProcessInfo.processInfo.arguments.contains("-UITesting") {
+            UserDefaults.standard.set(0, forKey: "lastScore")
+            UserDefaults.standard.set(0, forKey: "highScore")
+        }
+
         skView.frame = view.bounds
         skView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         skView.ignoresSiblingOrder = true

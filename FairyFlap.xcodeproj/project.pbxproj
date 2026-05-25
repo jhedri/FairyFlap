@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,11 +20,20 @@
 		6E1623E01E24FC4E00FB2C72 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E1623DF1E24FC4E00FB2C72 /* LaunchScreen.storyboard */; };
 		AA000001AA000001AA000001 /* HomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000002AA000002AA000002 /* HomeScene.swift */; };
 		BB000001BB000001BB000001 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000002BB000002BB000002 /* SceneDelegate.swift */; };
+		GG000001GG000001GG000001 /* SKNode+Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = GG000002GG000002GG000002 /* SKNode+Accessibility.swift */; };
+		HH000001HH000001HH000001 /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = HH000002HH000002HH000002 /* AccessibilityIdentifiers.swift */; };
 		EE000001EE000001EE000001 /* unicorn.atlas in Resources */ = {isa = PBXBuildFile; fileRef = EE000002EE000002EE000002 /* unicorn.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		43745211193D163800654986 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 437451F2193D163700654986 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 437451F9193D163700654986;
+			remoteInfo = FairyFlap;
+		};
+		4F6F7DB12FC4DF29003B7B3C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 437451F2193D163700654986 /* Project object */;
 			proxyType = 1;
@@ -46,14 +55,21 @@
 		43745215193D163800654986 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43745216193D163800654986 /* FairyFlapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FairyFlapTests.swift; sourceTree = "<group>"; };
 		437A3DB9193D326A00909BA0 /* fairy.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = fairy.atlas; sourceTree = "<group>"; };
+		4F6F7DAB2FC4DF29003B7B3C /* FairyFlapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FairyFlapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FBF36642FBFBDB3000B889A /* fairy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fairy.png; sourceTree = "<group>"; };
 		4FBF36662FBFC012000B889A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FBF36682FBFC0D3000B889A /* FairyFlap.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = FairyFlap.xctestplan; sourceTree = "<group>"; };
 		6E1623DF1E24FC4E00FB2C72 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AA000002AA000002AA000002 /* HomeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
 		BB000002BB000002BB000002 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		GG000002GG000002GG000002 /* SKNode+Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKNode+Accessibility.swift"; sourceTree = "<group>"; };
+		HH000002HH000002HH000002 /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
 		EE000002EE000002EE000002 /* unicorn.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = unicorn.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		4F6F7DAC2FC4DF29003B7B3C /* FairyFlapUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FairyFlapUITests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		437451F7193D163700654986 /* Frameworks */ = {
@@ -70,6 +86,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4F6F7DA82FC4DF29003B7B3C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -79,6 +102,7 @@
 				4FBF36682FBFC0D3000B889A /* FairyFlap.xctestplan */,
 				437451FC193D163700654986 /* FairyFlap */,
 				43745213193D163800654986 /* FairyFlapTests */,
+				4F6F7DAC2FC4DF29003B7B3C /* FairyFlapUITests */,
 				437451FB193D163700654986 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -89,6 +113,7 @@
 			children = (
 				437451FA193D163700654986 /* FairyFlap.app */,
 				43745210193D163800654986 /* FairyFlapTests.xctest */,
+				4F6F7DAB2FC4DF29003B7B3C /* FairyFlapUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,6 +127,8 @@
 				43745201193D163700654986 /* GameScene.sks */,
 				43745203193D163800654986 /* GameScene.swift */,
 				AA000002AA000002AA000002 /* HomeScene.swift */,
+				GG000002GG000002GG000002 /* SKNode+Accessibility.swift */,
+				HH000002HH000002HH000002 /* AccessibilityIdentifiers.swift */,
 				43745207193D163800654986 /* Main.storyboard */,
 				43745205193D163800654986 /* GameViewController.swift */,
 				4374520A193D163800654986 /* Images.xcassets */,
@@ -177,6 +204,29 @@
 			productReference = 43745210193D163800654986 /* FairyFlapTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		4F6F7DAA2FC4DF29003B7B3C /* FairyFlapUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F6F7DB52FC4DF29003B7B3C /* Build configuration list for PBXNativeTarget "FairyFlapUITests" */;
+			buildPhases = (
+				4F6F7DA72FC4DF29003B7B3C /* Sources */,
+				4F6F7DA82FC4DF29003B7B3C /* Frameworks */,
+				4F6F7DA92FC4DF29003B7B3C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4F6F7DB22FC4DF29003B7B3C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4F6F7DAC2FC4DF29003B7B3C /* FairyFlapUITests */,
+			);
+			name = FairyFlapUITests;
+			packageProductDependencies = (
+			);
+			productName = FairyFlapUITests;
+			productReference = 4F6F7DAB2FC4DF29003B7B3C /* FairyFlapUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -185,7 +235,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 2650;
 				LastUpgradeCheck = 2650;
 				ORGANIZATIONNAME = Fullstack.io;
 				TargetAttributes = {
@@ -196,6 +246,10 @@
 					4374520F193D163800654986 = {
 						CreatedOnToolsVersion = 6.0;
 						LastSwiftMigration = 1110;
+						TestTargetID = 437451F9193D163700654986;
+					};
+					4F6F7DAA2FC4DF29003B7B3C = {
+						CreatedOnToolsVersion = 26.5;
 						TestTargetID = 437451F9193D163700654986;
 					};
 				};
@@ -215,6 +269,7 @@
 			targets = (
 				437451F9193D163700654986 /* FairyFlap */,
 				4374520F193D163800654986 /* FairyFlapTests */,
+				4F6F7DAA2FC4DF29003B7B3C /* FairyFlapUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -242,6 +297,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4F6F7DA92FC4DF29003B7B3C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -254,6 +316,8 @@
 				43745206193D163800654986 /* GameViewController.swift in Sources */,
 				43745200193D163700654986 /* AppDelegate.swift in Sources */,
 				BB000001BB000001BB000001 /* SceneDelegate.swift in Sources */,
+				GG000001GG000001GG000001 /* SKNode+Accessibility.swift in Sources */,
+				HH000001HH000001HH000001 /* AccessibilityIdentifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +329,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4F6F7DA72FC4DF29003B7B3C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -272,6 +343,11 @@
 			isa = PBXTargetDependency;
 			target = 437451F9193D163700654986 /* FairyFlap */;
 			targetProxy = 43745211193D163800654986 /* PBXContainerItemProxy */;
+		};
+		4F6F7DB22FC4DF29003B7B3C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 437451F9193D163700654986 /* FairyFlap */;
+			targetProxy = 4F6F7DB12FC4DF29003B7B3C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -512,6 +588,70 @@
 			};
 			name = Release;
 		};
+		4F6F7DB32FC4DF29003B7B3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Hedrick.FairyFlapUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FairyFlap;
+			};
+			name = Debug;
+		};
+		4F6F7DB42FC4DF29003B7B3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Hedrick.FairyFlapUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FairyFlap;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -538,6 +678,15 @@
 			buildConfigurations = (
 				4374521E193D163800654986 /* Debug */,
 				4374521F193D163800654986 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4F6F7DB52FC4DF29003B7B3C /* Build configuration list for PBXNativeTarget "FairyFlapUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F6F7DB32FC4DF29003B7B3C /* Debug */,
+				4F6F7DB42FC4DF29003B7B3C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

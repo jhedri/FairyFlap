@@ -23,6 +23,13 @@
         "identifier" : "4374520F193D163800654986",
         "name" : "FairyFlapTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:FairyFlap.xcodeproj",
+        "identifier" : "4F6F7DAA2FC4DF29003B7B3C",
+        "name" : "FairyFlapUITests"
+      }
     }
   ],
   "version" : 1

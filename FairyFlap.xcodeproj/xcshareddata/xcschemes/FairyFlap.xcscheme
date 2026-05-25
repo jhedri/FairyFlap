@@ -45,6 +45,17 @@
                ReferencedContainer = "container:FairyFlap.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4F6F7DAA2FC4DF29003B7B3C"
+               BuildableName = "FairyFlapUITests.xctest"
+               BlueprintName = "FairyFlapUITests"
+               ReferencedContainer = "container:FairyFlap.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
