@@ -15,7 +15,7 @@
 		4374520B193D163800654986 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4374520A193D163800654986 /* Images.xcassets */; };
 		43745217193D163800654986 /* FairyFlapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43745216193D163800654986 /* FairyFlapTests.swift */; };
 		437A3DBA193D326A00909BA0 /* fairy.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 437A3DB9193D326A00909BA0 /* fairy.atlas */; };
-		DD000001DD000001DD000001 /* troll.atlas in Resources */ = {isa = PBXBuildFile; fileRef = DD000002DD000002DD000002 /* troll.atlas */; };
+		EE000001EE000001EE000001 /* unicorn.atlas in Resources */ = {isa = PBXBuildFile; fileRef = EE000002EE000002EE000002 /* unicorn.atlas */; };
 		4FBF36652FBFBDB3000B889A /* fairy.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF36642FBFBDB3000B889A /* fairy.png */; };
 		4FBF36672FBFC012000B889A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF36662FBFC012000B889A /* Assets.xcassets */; };
 		6E1623E01E24FC4E00FB2C72 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E1623DF1E24FC4E00FB2C72 /* LaunchScreen.storyboard */; };
@@ -46,7 +46,7 @@
 		43745215193D163800654986 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43745216193D163800654986 /* FairyFlapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FairyFlapTests.swift; sourceTree = "<group>"; };
 		437A3DB9193D326A00909BA0 /* fairy.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = fairy.atlas; sourceTree = "<group>"; };
-		DD000002DD000002DD000002 /* troll.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = troll.atlas; sourceTree = "<group>"; };
+		EE000002EE000002EE000002 /* unicorn.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = unicorn.atlas; sourceTree = "<group>"; };
 		4FBF36642FBFBDB3000B889A /* fairy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fairy.png; sourceTree = "<group>"; };
 		4FBF36662FBFC012000B889A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FBF36682FBFC0D3000B889A /* FairyFlap.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = FairyFlap.xctestplan; sourceTree = "<group>"; };
@@ -106,7 +106,7 @@
 				43745205193D163800654986 /* GameViewController.swift */,
 				4374520A193D163800654986 /* Images.xcassets */,
 				437A3DB9193D326A00909BA0 /* fairy.atlas */,
-				DD000002DD000002DD000002 /* troll.atlas */,
+				EE000002EE000002EE000002 /* unicorn.atlas */,
 				437451FD193D163700654986 /* Supporting Files */,
 				4FBF36642FBFBDB3000B889A /* fairy.png */,
 				4FBF36662FBFC012000B889A /* Assets.xcassets */,
@@ -228,7 +228,7 @@
 				4374520B193D163800654986 /* Images.xcassets in Resources */,
 				43745202193D163700654986 /* GameScene.sks in Resources */,
 				437A3DBA193D326A00909BA0 /* fairy.atlas in Resources */,
-				DD000001DD000001DD000001 /* troll.atlas in Resources */,
+				EE000001EE000001EE000001 /* unicorn.atlas in Resources */,
 				4FBF36672FBFC012000B889A /* Assets.xcassets in Resources */,
 				6E1623E01E24FC4E00FB2C72 /* LaunchScreen.storyboard in Resources */,
 				43745209193D163800654986 /* Main.storyboard in Resources */,

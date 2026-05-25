@@ -26,12 +26,12 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     var highScoreLabelNode:SKLabelNode!
     var fairyTexture1: SKTexture!
     var fairyTexture2: SKTexture!
-    var trollTexture1: SKTexture!
-    var trollTexture2: SKTexture!
+    var unicornTexture1: SKTexture!
+    var unicornTexture2: SKTexture!
     var score = 0
     var groundHeight: CGFloat = 0
     var isInvincible = false
-    var isTroll = false
+    var isUnicorn = false
     var spawnDustNext = true
     
     let backgroundScrollSpeed: CGFloat = 0.35
@@ -153,10 +153,10 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         fairyTexture1.filteringMode = .nearest
         fairyTexture2 = SKTexture(imageNamed: "fairy-02")
         fairyTexture2.filteringMode = .nearest
-        trollTexture1 = SKTexture(imageNamed: "troll-01")
-        trollTexture1.filteringMode = .nearest
-        trollTexture2 = SKTexture(imageNamed: "troll-02")
-        trollTexture2.filteringMode = .nearest
+        unicornTexture1 = SKTexture(imageNamed: "unicorn-01")
+        unicornTexture1.filteringMode = .nearest
+        unicornTexture2 = SKTexture(imageNamed: "unicorn-02")
+        unicornTexture2.filteringMode = .nearest
         
         let anim = SKAction.animate(with: [fairyTexture1, fairyTexture2], timePerFrame: 0.2)
         let flap = SKAction.repeatForever(anim)
@@ -355,7 +355,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     }
     
     /// Creates a rolling spike ball at a random height. Touching one turns the
-    /// fairy into a troll for five seconds without interrupting gameplay.
+    /// fairy into a unicorn for five seconds without interrupting gameplay.
     func spawnSpikeBall() {
         let spawnX = self.frame.size.width + 20
         let minY = groundHeight + 50
@@ -449,27 +449,27 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         return false
     }
     
-    /// Turns the fairy into a troll for five seconds. Gameplay continues normally.
+    /// Turns the fairy into a flying unicorn for five seconds. Gameplay continues normally.
     /// Touching another spike ball while transformed resets the timer.
-    func applyTrollTransform() {
-        fairy.removeAction(forKey: "trollTransform")
-        isTroll = true
+    func applyUnicornTransform() {
+        fairy.removeAction(forKey: "unicornTransform")
+        isUnicorn = true
         
         fairy.removeAction(forKey: "flap")
         fairy.setScale(fairyScale)
         fairy.color = .white
         fairy.colorBlendFactor = 0
         
-        let trollAnim = SKAction.animate(with: [trollTexture1, trollTexture2], timePerFrame: 0.2)
-        fairy.run(SKAction.repeatForever(trollAnim), withKey: "trollFlap")
+        let unicornAnim = SKAction.animate(with: [unicornTexture1, unicornTexture2], timePerFrame: 0.2)
+        fairy.run(SKAction.repeatForever(unicornAnim), withKey: "unicornFlap")
         
         let revert = SKAction.run { self.restoreFairyAppearance() }
-        fairy.run(SKAction.sequence([SKAction.wait(forDuration: 5.0), revert]), withKey: "trollTransform")
+        fairy.run(SKAction.sequence([SKAction.wait(forDuration: 5.0), revert]), withKey: "unicornTransform")
     }
     
     func restoreFairyAppearance() {
-        isTroll = false
-        fairy.removeAction(forKey: "trollFlap")
+        isUnicorn = false
+        fairy.removeAction(forKey: "unicornFlap")
         fairy.zRotation = 0
         fairy.setScale(fairyScale)
         
@@ -493,7 +493,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         fairy.childNode(withName: "glow")?.removeFromParent()
         isInvincible = true
         
-        if !isTroll {
+        if !isUnicorn {
             fairy.color = SKColor(red: 1.0, green: 0.95, blue: 0.7, alpha: 1.0)
             fairy.colorBlendFactor = 0.55
         }
@@ -517,7 +517,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         let removeGlow = SKAction.run {
             glow.removeFromParent()
             self.isInvincible = false
-            if self.isTroll {
+            if self.isUnicorn {
                 self.fairy.color = .white
                 self.fairy.colorBlendFactor = 0
             } else {
@@ -567,10 +567,10 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         backgroundMoving.speed = 0
         removeAction(forKey: "spawnCollectible")
         isInvincible = false
-        isTroll = false
+        isUnicorn = false
         fairy.removeAction(forKey: "fairyGlow")
-        fairy.removeAction(forKey: "trollTransform")
-        fairy.removeAction(forKey: "trollFlap")
+        fairy.removeAction(forKey: "unicornTransform")
+        fairy.removeAction(forKey: "unicornFlap")
         fairy.removeAction(forKey: "flap")
         fairy.childNode(withName: "glow")?.removeFromParent()
         fairy.colorBlendFactor = 0
@@ -622,7 +622,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     /// so it pitches up while rising and down while falling.
     override func update(_ currentTime: TimeInterval) {
         let dy = fairy.physicsBody!.velocity.dy
-        if !isTroll {
+        if !isUnicorn {
             let value = dy * (dy < 0 ? 0.003 : 0.001)
             fairy.zRotation = min( max(-1, value), 0.5 )
         }
@@ -644,7 +644,10 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
             } else if ( contact.bodyA.categoryBitMask & spikeBallCategory ) == spikeBallCategory || ( contact.bodyB.categoryBitMask & spikeBallCategory ) == spikeBallCategory {
                 let spikeNode = (contact.bodyA.categoryBitMask & spikeBallCategory) == spikeBallCategory ? contact.bodyA.node : contact.bodyB.node
                 spikeNode?.removeFromParent()
-                applyTrollTransform()
+                score += 5
+                scoreLabelNode.text = String(score)
+                scoreLabelNode.run(SKAction.sequence([SKAction.scale(to: 1.5, duration:TimeInterval(0.1)), SKAction.scale(to: 1.0, duration:TimeInterval(0.1))]))
+                applyUnicornTransform()
             } else if ( contact.bodyA.categoryBitMask & scoreCategory ) == scoreCategory || ( contact.bodyB.categoryBitMask & scoreCategory ) == scoreCategory {
                 // Fairy has contact with score entity
                 score += 1
