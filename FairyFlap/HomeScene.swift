@@ -13,9 +13,15 @@ class HomeScene: SKScene {
     let backgroundScrollSpeed: CGFloat = 0.35
     var backgroundMoving: SKNode!
     var moving: SKNode!
+    /// When true, plays a fireworks celebration after returning from a record-breaking run.
+    var celebrateNewHighScore = false
 
-    /// Builds the home screen when the scene is presented: background layers,
-    /// animated fairy preview, and UI (title, scores, play button).
+    /// Builds the home screen when the scene is presented.
+    ///
+    /// Sets up background layers, an animated fairy preview, and UI (title, scores,
+    /// play button).
+    ///
+    /// - Parameter view: The view that is presenting this scene.
     override func didMove(to view: SKView) {
         self.backgroundColor = sceneBackgroundColor
 
@@ -29,6 +35,7 @@ class HomeScene: SKScene {
         setupScrollingBackground()
         setupFairyPreview()
         setupUI()
+        showFireworksIfNeeded()
     }
 
     // MARK: - Scrolling Background
@@ -176,9 +183,90 @@ class HomeScene: SKScene {
         self.addChild(hint)
     }
 
+    // MARK: - Fireworks
+
+    /// Plays a fireworks show when the player just set a new high score.
+    private func showFireworksIfNeeded() {
+        guard celebrateNewHighScore else { return }
+        runFireworksCelebration()
+    }
+
+    /// Launches several staggered firework bursts across the upper screen.
+    private func runFireworksCelebration() {
+        let colors: [SKColor] = [
+            SKColor(red: 1.0, green: 0.35, blue: 0.35, alpha: 1.0),
+            SKColor(red: 1.0, green: 0.85, blue: 0.2, alpha: 1.0),
+            SKColor(red: 0.35, green: 0.9, blue: 0.45, alpha: 1.0),
+            SKColor(red: 0.45, green: 0.75, blue: 1.0, alpha: 1.0),
+            SKColor(red: 1.0, green: 0.55, blue: 0.95, alpha: 1.0)
+        ]
+
+        for i in 0 ..< 7 {
+            let x = CGFloat.random(in: frame.width * 0.12 ... frame.width * 0.88)
+            let y = CGFloat.random(in: frame.height * 0.42 ... frame.height * 0.82)
+            let delay = TimeInterval(i) * 0.32 + TimeInterval.random(in: 0 ... 0.18)
+            run(SKAction.sequence([
+                SKAction.wait(forDuration: delay),
+                SKAction.run { [weak self] in
+                    self?.createFireworkBurst(at: CGPoint(x: x, y: y), colors: colors)
+                }
+            ]))
+        }
+    }
+
+    /// Creates a single radial burst of colored particles at the given position.
+    ///
+    /// - Parameters:
+    ///   - position: The burst origin in scene coordinates.
+    ///   - colors: Palette used to pick the burst color.
+    private func createFireworkBurst(at position: CGPoint, colors: [SKColor]) {
+        let color = colors.randomElement() ?? .white
+        let particleCount = 22
+
+        for i in 0 ..< particleCount {
+            let angle = (CGFloat(i) / CGFloat(particleCount)) * .pi * 2 + CGFloat.random(in: -0.15 ... 0.15)
+            let distance = CGFloat.random(in: 70 ... 130)
+            let dot = SKShapeNode(circleOfRadius: CGFloat.random(in: 3 ... 5))
+            dot.fillColor = color
+            dot.strokeColor = .clear
+            dot.position = position
+            dot.zPosition = 25
+            addChild(dot)
+
+            let duration = TimeInterval.random(in: 0.45 ... 0.75)
+            dot.run(SKAction.sequence([
+                SKAction.group([
+                    SKAction.moveBy(x: cos(angle) * distance, y: sin(angle) * distance, duration: duration),
+                    SKAction.fadeOut(withDuration: duration),
+                    SKAction.scale(to: 0.15, duration: duration)
+                ]),
+                SKAction.removeFromParent()
+            ]))
+        }
+
+        let flash = SKShapeNode(circleOfRadius: 6)
+        flash.fillColor = .white
+        flash.strokeColor = .clear
+        flash.position = position
+        flash.zPosition = 25
+        flash.alpha = 0.95
+        addChild(flash)
+        flash.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(to: 2.8, duration: 0.12),
+                SKAction.fadeOut(withDuration: 0.22)
+            ]),
+            SKAction.removeFromParent()
+        ]))
+    }
+
     // MARK: - Touch
 
     /// Any tap on the home screen starts the game.
+    ///
+    /// - Parameters:
+    ///   - touches: The touches that began on the scene.
+    ///   - event: The event containing touch information.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         transitionToGame()
     }

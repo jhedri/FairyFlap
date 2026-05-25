@@ -33,6 +33,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     var isInvincible = false
     var isUnicorn = false
     var spawnDustNext = true
+    var justAchievedHighScore = false
     
     let backgroundScrollSpeed: CGFloat = 0.35
     
@@ -52,8 +53,12 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         self.physicsBody = nil
     }
 
-    /// Sets up the entire game when the scene is presented: physics, parallax
-    /// scrolling background, ground, fairy, score labels, and stone spawning.
+    /// Sets up the entire game when the scene is presented.
+    ///
+    /// Configures physics, the parallax scrolling background, grass, the fairy,
+    /// score labels, stone spawning, and collectible scheduling.
+    ///
+    /// - Parameter view: The view that is presenting this scene.
     override func didMove(to view: SKView) {
         
         // setup physics
@@ -253,6 +258,9 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     }
     
     /// Schedules the next staggered collectible spawn after a delay.
+    ///
+    /// - Parameter initialDelay: Optional fixed delay in seconds; uses a random
+    ///   value from `collectibleSpawnDelayRange` when nil.
     func scheduleNextCollectible(initialDelay: TimeInterval? = nil) {
         removeAction(forKey: "spawnCollectible")
         let delay = initialDelay ?? TimeInterval.random(in: collectibleSpawnDelayRange)
@@ -261,8 +269,10 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         run(SKAction.sequence([wait, spawn]), withKey: "spawnCollectible")
     }
     
-    /// Spawns fairy dust or a spike ball, alternating types and skipping if
-    /// either collectible is still on screen.
+    /// Spawns fairy dust or a spike ball, alternating types each cycle.
+    ///
+    /// Waits and retries when a collectible is already on screen or when no stone
+    /// gap is available for placement. Schedules the next spawn only after success.
     func trySpawnCollectible() {
         guard moving.speed > 0 else { return }
         
@@ -290,6 +300,11 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     }
     
     /// Returns the horizontal center and vertical bounds of the flyable gap in a stone pair.
+    ///
+    /// - Parameter stonePair: A stone obstacle node containing bottom, gap-lip,
+    ///   and filler segment sprites.
+    /// - Returns: The gap center X and bottom/top Y in scene coordinates, or nil
+    ///   when the pair does not contain a valid gap.
     func gapBounds(for stonePair: SKNode) -> (x: CGFloat, bottom: CGFloat, top: CGFloat)? {
         var bottomStone: SKSpriteNode?
         for case let stone as SKSpriteNode in stonePair.children {
@@ -319,6 +334,11 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     }
     
     /// Picks a spawn point inside an upcoming stone gap ahead of the fairy.
+    ///
+    /// - Parameters:
+    ///   - radius: The collectible's collision radius.
+    ///   - margin: Extra clearance kept between the collectible and gap edges.
+    /// - Returns: A position in scene coordinates, or nil when no suitable gap exists.
     func pickCollectibleSpawnPosition(radius: CGFloat, margin: CGFloat = 12) -> CGPoint? {
         let stoneWidth = stoneTextureUp.size().width * 2.0
         let padding = radius + margin
@@ -337,8 +357,11 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         return CGPoint(x: gap.x, y: y)
     }
     
-    /// Creates a small fairy dust cloud inside a stone gap. Collecting one makes
-    /// the fairy glow for five seconds.
+    /// Creates a small fairy dust cloud inside a stone gap.
+    ///
+    /// Collecting one makes the character glow and become invincible for five seconds.
+    ///
+    /// - Returns: `true` when the cloud was spawned; `false` when no gap was available.
     @discardableResult
     func spawnDustCloud() -> Bool {
         guard let position = pickCollectibleSpawnPosition(radius: 14) else { return false }
@@ -384,8 +407,12 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         return true
     }
     
-    /// Creates a rolling spike ball inside a stone gap. Touching one turns the
-    /// fairy into a unicorn for ten seconds without interrupting gameplay.
+    /// Creates a rolling spike ball inside a stone gap.
+    ///
+    /// Touching one turns the fairy into a unicorn for ten seconds, awards five
+    /// points, and does not interrupt gameplay.
+    ///
+    /// - Returns: `true` when the ball was spawned; `false` when no gap was available.
     @discardableResult
     func spawnSpikeBall() -> Bool {
         let ballRadius: CGFloat = 16
@@ -410,6 +437,9 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     }
     
     /// Builds a spiky ball from simple shapes so no extra art assets are needed.
+    ///
+    /// - Parameter radius: The overall radius of the spike ball.
+    /// - Returns: A node containing a circular core and radial spike shapes.
     func makeSpikeBallNode(radius: CGFloat) -> SKNode {
         let ball = SKNode()
         
@@ -458,6 +488,9 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         fairy.run(SKAction.sequence([SKAction.wait(forDuration: 10.0), revert]), withKey: "unicornTransform")
     }
     
+    /// Restores the fairy sprite, flap animation, and tint after a unicorn transform ends.
+    ///
+    /// Preserves the glowing invincible appearance when fairy dust is still active.
     func restoreFairyAppearance() {
         isUnicorn = false
         fairy.removeAction(forKey: "unicornFlap")
@@ -516,6 +549,8 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     }
     
     /// Pushes the fairy away from an obstacle when invincible.
+    ///
+    /// - Parameter contact: The physics contact between the fairy and an obstacle.
     func bounceFairy(from contact: SKPhysicsContact) {
         guard let body = fairy.physicsBody else { return }
         
@@ -540,9 +575,13 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     }
     
     /// Transitions back to the home screen with a fade animation.
+    ///
+    /// Passes along whether the run ended on a new high score so the home screen
+    /// can celebrate with fireworks.
     func goHome() {
         let scene = HomeScene(size: self.size)
         scene.scaleMode = self.scaleMode
+        scene.celebrateNewHighScore = justAchievedHighScore
         self.view?.presentScene(scene, transition: SKTransition.fade(withDuration: 0.4))
     }
     
@@ -573,6 +612,9 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         if score > currentBest {
             UserDefaults.standard.set(score, forKey: "highScore")
             highScoreLabelNode.text = "Top Score: \(score)"
+            justAchievedHighScore = true
+        } else {
+            justAchievedHighScore = false
         }
         
         removeAction(forKey: "flash")
@@ -585,7 +627,9 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         })]), withKey: "flash")
     }
     
-    /// Returns true when the fairy has moved completely outside the visible scene.
+    /// Returns whether the fairy has moved completely outside the visible scene.
+    ///
+    /// - Returns: `true` when the fairy is off any edge of the frame.
     func fairyIsOffScreen() -> Bool {
         let margin = max(fairy.size.width, fairy.size.height) / 2
         let pos = fairy.position
@@ -596,6 +640,10 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     }
 
     /// Handles tap input to flap the fairy during gameplay.
+    ///
+    /// - Parameters:
+    ///   - touches: The touches that began on the scene.
+    ///   - event: The event containing touch information.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if moving.speed > 0 {
             for _ in touches {
@@ -605,8 +653,12 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         }
     }
     
-    /// Called every frame. Tilts the fairy sprite based on vertical velocity
-    /// so it pitches up while rising and down while falling.
+    /// Called every frame to update fairy rotation and check for off-screen death.
+    ///
+    /// Tilts the sprite based on vertical velocity so it pitches up while rising
+    /// and down while falling.
+    ///
+    /// - Parameter currentTime: The time elapsed since the scene began.
     override func update(_ currentTime: TimeInterval) {
         let dy = fairy.physicsBody!.velocity.dy
         let value = dy * (dy < 0 ? 0.003 : 0.001)
@@ -617,9 +669,12 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         }
     }
     
-    /// Physics contact handler. Increments score when the fairy passes through
-    /// a gap, or triggers death (stop scrolling, save high score, red flash,
-    /// then return to the home screen) when the fairy hits a stone or the ground.
+    /// Physics contact handler for gameplay collisions.
+    ///
+    /// Collects fairy dust, spike balls, and score triggers; bounces off obstacles
+    /// while invincible; otherwise triggers death on stone or ground contact.
+    ///
+    /// - Parameter contact: The physics bodies that just came into contact.
     func didBegin(_ contact: SKPhysicsContact) {
         if moving.speed > 0 {
             if ( contact.bodyA.categoryBitMask & dustCategory ) == dustCategory || ( contact.bodyB.categoryBitMask & dustCategory ) == dustCategory {
@@ -650,7 +705,12 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
 }
 
 extension SKScene {
-    /// Tiles and scrolls the grass foreground. Returns the display height of one grass strip.
+    /// Tiles and scrolls the grass foreground as a seamless looping strip.
+    ///
+    /// - Parameters:
+    ///   - parent: The node that should contain the scrolling grass layer.
+    ///   - scale: Uniform scale applied to each grass tile.
+    /// - Returns: The display height of one scaled grass strip.
     @discardableResult
     func addScrollingGrass(to parent: SKNode, scale: CGFloat = 2.0) -> CGFloat {
         let texture = SKTexture(imageNamed: "grass")

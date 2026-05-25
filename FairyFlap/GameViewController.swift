@@ -23,6 +23,7 @@ class GameViewController: UIViewController {
         view.addSubview(skView)
     }
 
+    /// Presents the initial home scene once the SpriteKit view has a valid size.
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
