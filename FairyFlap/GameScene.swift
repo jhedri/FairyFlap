@@ -32,8 +32,9 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     var groundHeight: CGFloat = 0
     var isInvincible = false
     var isUnicorn = false
-    var spawnDustNext = true
     var justAchievedHighScore = false
+    var stonesSinceLastCollectible = 0
+    var stonesUntilNextCollectible = Int.random(in: 3...5)
     
     let backgroundScrollSpeed: CGFloat = 0.35
     
@@ -45,7 +46,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     let spikeBallCategory: UInt32 = 1 << 5
     let verticalStoneGap: CGFloat = 150.0
     let fairyScale: CGFloat = 1.5
-    let collectibleSpawnDelayRange: ClosedRange<TimeInterval> = 5...10
+    let collectibleStoneIntervalRange: ClosedRange<Int> = 3...5
     
     /// Called when the scene is first loaded from the .sks file. Clears any
     /// default physics body so we can configure physics in `didMove(to:)`.
@@ -135,8 +136,8 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         let spawnThenDelayForever = SKAction.repeatForever(spawnThenDelay)
         self.run(spawnThenDelayForever)
         
-        // stagger fairy dust and spike balls so only one is on screen at a time
-        scheduleNextCollectible(initialDelay: TimeInterval.random(in: collectibleSpawnDelayRange))
+        stonesSinceLastCollectible = 0
+        stonesUntilNextCollectible = Int.random(in: collectibleStoneIntervalRange)
         
         // setup our fairy
         fairyTexture1 = SKTexture(imageNamed: "fairy-01")
@@ -255,48 +256,45 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         
         stonePair.run(moveStonesAndRemove)
         stones.addChild(stonePair)
+        handleCollectibleSpawnAfterStone(stonePair)
     }
     
-    /// Schedules the next staggered collectible spawn after a delay.
+    /// Attempts to spawn fairy dust or a spike ball after a new stone pair appears.
     ///
-    /// - Parameter initialDelay: Optional fixed delay in seconds; uses a random
-    ///   value from `collectibleSpawnDelayRange` when nil.
-    func scheduleNextCollectible(initialDelay: TimeInterval? = nil) {
-        removeAction(forKey: "spawnCollectible")
-        let delay = initialDelay ?? TimeInterval.random(in: collectibleSpawnDelayRange)
-        let wait = SKAction.wait(forDuration: delay)
-        let spawn = SKAction.run { [weak self] in self?.trySpawnCollectible() }
-        run(SKAction.sequence([wait, spawn]), withKey: "spawnCollectible")
-    }
-    
-    /// Spawns fairy dust or a spike ball, alternating types each cycle.
+    /// A collectible is placed every 3–5 stone pairs, randomly chosen as dust or
+    /// a spike ball, and only when no other collectible is on screen.
     ///
-    /// Waits and retries when a collectible is already on screen or when no stone
-    /// gap is available for placement. Schedules the next spawn only after success.
-    func trySpawnCollectible() {
+    /// - Parameter stonePair: The stone obstacle pair that just spawned.
+    func handleCollectibleSpawnAfterStone(_ stonePair: SKNode) {
         guard moving.speed > 0 else { return }
         
-        if !dustClouds.children.isEmpty || !spikeBalls.children.isEmpty {
-            let retry = SKAction.wait(forDuration: 0.5)
-            let tryAgain = SKAction.run { [weak self] in self?.trySpawnCollectible() }
-            run(SKAction.sequence([retry, tryAgain]), withKey: "spawnCollectible")
-            return
-        }
+        stonesSinceLastCollectible += 1
+        guard stonesSinceLastCollectible >= stonesUntilNextCollectible else { return }
+        guard dustClouds.children.isEmpty, spikeBalls.children.isEmpty else { return }
         
-        let spawned: Bool
-        if spawnDustNext {
-            spawned = spawnDustCloud()
-        } else {
-            spawned = spawnSpikeBall()
-        }
-        spawnDustNext.toggle()
+        let spawned = Bool.random()
+            ? spawnDustCloud(on: stonePair)
+            : spawnSpikeBall(on: stonePair)
+        
         if spawned {
-            scheduleNextCollectible()
-        } else {
-            let retry = SKAction.wait(forDuration: 0.5)
-            let tryAgain = SKAction.run { [weak self] in self?.trySpawnCollectible() }
-            run(SKAction.sequence([retry, tryAgain]), withKey: "spawnCollectible")
+            stonesSinceLastCollectible = 0
+            stonesUntilNextCollectible = Int.random(in: collectibleStoneIntervalRange)
         }
+    }
+    
+    /// Returns a random point inside the flyable gap of a specific stone pair.
+    ///
+    /// - Parameters:
+    ///   - stonePair: The stone obstacle pair to search.
+    ///   - radius: The collectible's collision radius.
+    ///   - margin: Extra clearance kept between the collectible and gap edges.
+    /// - Returns: A position in scene coordinates, or nil when the gap is too small.
+    func collectPositionInGap(for stonePair: SKNode, radius: CGFloat, margin: CGFloat = 12) -> CGPoint? {
+        guard let gap = gapBounds(for: stonePair) else { return nil }
+        let padding = radius + margin
+        guard gap.top - gap.bottom >= padding * 2 else { return nil }
+        let y = CGFloat.random(in: gap.bottom + padding ... gap.top - padding)
+        return CGPoint(x: gap.x, y: y)
     }
     
     /// Returns the horizontal center and vertical bounds of the flyable gap in a stone pair.
@@ -333,39 +331,19 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         return (stonePair.position.x, gapBottom, gapTop)
     }
     
-    /// Picks a spawn point inside an upcoming stone gap ahead of the fairy.
-    ///
-    /// - Parameters:
-    ///   - radius: The collectible's collision radius.
-    ///   - margin: Extra clearance kept between the collectible and gap edges.
-    /// - Returns: A position in scene coordinates, or nil when no suitable gap exists.
-    func pickCollectibleSpawnPosition(radius: CGFloat, margin: CGFloat = 12) -> CGPoint? {
-        let stoneWidth = stoneTextureUp.size().width * 2.0
-        let padding = radius + margin
-        var candidates: [(x: CGFloat, bottom: CGFloat, top: CGFloat)] = []
-        
-        for case let stonePair as SKNode in stones.children {
-            guard let gap = gapBounds(for: stonePair) else { continue }
-            guard gap.top - gap.bottom >= padding * 2 else { continue }
-            guard stonePair.position.x > fairy.position.x else { continue }
-            guard stonePair.position.x < frame.size.width + stoneWidth * 2 else { continue }
-            candidates.append(gap)
-        }
-        
-        guard let gap = candidates.randomElement() else { return nil }
-        let y = CGFloat.random(in: gap.bottom + padding ... gap.top - padding)
-        return CGPoint(x: gap.x, y: y)
-    }
-    
     /// Creates a small fairy dust cloud inside a stone gap.
     ///
     /// Collecting one makes the character glow and become invincible for five seconds.
     ///
     /// - Returns: `true` when the cloud was spawned; `false` when no gap was available.
     @discardableResult
-    func spawnDustCloud() -> Bool {
-        guard let position = pickCollectibleSpawnPosition(radius: 14) else { return false }
-        
+    func spawnDustCloud(on stonePair: SKNode) -> Bool {
+        guard let position = collectPositionInGap(for: stonePair, radius: 14) else { return false }
+        return spawnDustCloud(at: position)
+    }
+    
+    @discardableResult
+    func spawnDustCloud(at position: CGPoint) -> Bool {
         let cloud = SKNode()
         cloud.position = position
         cloud.zPosition = -5
@@ -414,10 +392,14 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     ///
     /// - Returns: `true` when the ball was spawned; `false` when no gap was available.
     @discardableResult
-    func spawnSpikeBall() -> Bool {
+    func spawnSpikeBall(on stonePair: SKNode) -> Bool {
         let ballRadius: CGFloat = 16
-        guard let position = pickCollectibleSpawnPosition(radius: ballRadius) else { return false }
-        
+        guard let position = collectPositionInGap(for: stonePair, radius: ballRadius) else { return false }
+        return spawnSpikeBall(at: position, radius: ballRadius)
+    }
+    
+    @discardableResult
+    func spawnSpikeBall(at position: CGPoint, radius ballRadius: CGFloat = 16) -> Bool {
         let ball = makeSpikeBallNode(radius: ballRadius)
         ball.position = position
         ball.zPosition = -5
@@ -591,7 +573,6 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         
         moving.speed = 0
         backgroundMoving.speed = 0
-        removeAction(forKey: "spawnCollectible")
         isInvincible = false
         isUnicorn = false
         fairy.removeAction(forKey: "fairyGlow")
