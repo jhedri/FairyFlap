@@ -20,9 +20,9 @@
 		6E1623E01E24FC4E00FB2C72 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E1623DF1E24FC4E00FB2C72 /* LaunchScreen.storyboard */; };
 		AA000001AA000001AA000001 /* HomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000002AA000002AA000002 /* HomeScene.swift */; };
 		BB000001BB000001BB000001 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000002BB000002BB000002 /* SceneDelegate.swift */; };
+		EE000001EE000001EE000001 /* unicorn.atlas in Resources */ = {isa = PBXBuildFile; fileRef = EE000002EE000002EE000002 /* unicorn.atlas */; };
 		GG000001GG000001GG000001 /* SKNode+Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = GG000002GG000002GG000002 /* SKNode+Accessibility.swift */; };
 		HH000001HH000001HH000001 /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = HH000002HH000002HH000002 /* AccessibilityIdentifiers.swift */; };
-		EE000001EE000001EE000001 /* unicorn.atlas in Resources */ = {isa = PBXBuildFile; fileRef = EE000002EE000002EE000002 /* unicorn.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,9 +62,9 @@
 		6E1623DF1E24FC4E00FB2C72 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AA000002AA000002AA000002 /* HomeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
 		BB000002BB000002BB000002 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		EE000002EE000002EE000002 /* unicorn.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = unicorn.atlas; sourceTree = "<group>"; };
 		GG000002GG000002GG000002 /* SKNode+Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKNode+Accessibility.swift"; sourceTree = "<group>"; };
 		HH000002HH000002HH000002 /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
-		EE000002EE000002EE000002 /* unicorn.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = unicorn.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -494,7 +494,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xfrontend -disable-autolink-framework -Xfrontend AppIntents";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeffhedrick.FairyFlap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -524,7 +524,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xfrontend -disable-autolink-framework -Xfrontend AppIntents";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeffhedrick.FairyFlap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -542,6 +542,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/FairyFlap.app/FairyFlap";
+				DEVELOPMENT_TEAM = 2X5XS2M8C2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -569,6 +570,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/FairyFlap.app/FairyFlap";
+				DEVELOPMENT_TEAM = 2X5XS2M8C2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -600,6 +602,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 2X5XS2M8C2;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
@@ -615,7 +618,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = FairyFlap;
 			};
 			name = Debug;
@@ -633,6 +636,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 2X5XS2M8C2;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
@@ -647,7 +651,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = FairyFlap;
 			};
 			name = Release;
