@@ -21,11 +21,18 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     var moving:SKNode!
     var stones:SKNode!
     var dustClouds:SKNode!
+    var spikeBalls:SKNode!
     var scoreLabelNode:SKLabelNode!
     var highScoreLabelNode:SKLabelNode!
+    var fairyTexture1: SKTexture!
+    var fairyTexture2: SKTexture!
+    var trollTexture1: SKTexture!
+    var trollTexture2: SKTexture!
     var score = 0
     var groundHeight: CGFloat = 0
     var isInvincible = false
+    var isTroll = false
+    var spawnDustNext = true
     
     let backgroundScrollSpeed: CGFloat = 0.35
     
@@ -34,7 +41,10 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     let stoneCategory: UInt32 = 1 << 2
     let scoreCategory: UInt32 = 1 << 3
     let dustCategory: UInt32 = 1 << 4
+    let spikeBallCategory: UInt32 = 1 << 5
     let verticalStoneGap: CGFloat = 150.0
+    let fairyScale: CGFloat = 1.5
+    let collectibleSpawnDelayRange: ClosedRange<TimeInterval> = 5...10
     
     /// Called when the scene is first loaded from the .sks file. Clears any
     /// default physics body so we can configure physics in `didMove(to:)`.
@@ -65,6 +75,8 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         moving.addChild(stones)
         dustClouds = SKNode()
         moving.addChild(dustClouds)
+        spikeBalls = SKNode()
+        moving.addChild(spikeBalls)
         
         // ground (foreground — scrolls at full speed)
         let groundTexture = SKTexture(imageNamed: "land")
@@ -133,26 +145,26 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         let spawnThenDelayForever = SKAction.repeatForever(spawnThenDelay)
         self.run(spawnThenDelayForever)
         
-        // spawn fairy dust clouds occasionally
-        let spawnDust = SKAction.run(spawnDustCloud)
-        let dustDelay = SKAction.wait(forDuration: TimeInterval.random(in: 10...18))
-        let spawnDustThenDelay = SKAction.sequence([spawnDust, dustDelay])
-        let spawnDustForever = SKAction.repeatForever(spawnDustThenDelay)
-        self.run(spawnDustForever, withKey: "spawnDust")
+        // stagger fairy dust and spike balls so only one is on screen at a time
+        scheduleNextCollectible(initialDelay: TimeInterval.random(in: collectibleSpawnDelayRange))
         
         // setup our fairy
-        let fairyTexture1 = SKTexture(imageNamed: "fairy-01")
+        fairyTexture1 = SKTexture(imageNamed: "fairy-01")
         fairyTexture1.filteringMode = .nearest
-        let fairyTexture2 = SKTexture(imageNamed: "fairy-02")
+        fairyTexture2 = SKTexture(imageNamed: "fairy-02")
         fairyTexture2.filteringMode = .nearest
+        trollTexture1 = SKTexture(imageNamed: "troll-01")
+        trollTexture1.filteringMode = .nearest
+        trollTexture2 = SKTexture(imageNamed: "troll-02")
+        trollTexture2.filteringMode = .nearest
         
         let anim = SKAction.animate(with: [fairyTexture1, fairyTexture2], timePerFrame: 0.2)
         let flap = SKAction.repeatForever(anim)
         
         fairy = SKSpriteNode(texture: fairyTexture1)
-        fairy.setScale(1.5)
+        fairy.setScale(fairyScale)
         fairy.position = CGPoint(x: self.frame.size.width * 0.35, y:self.frame.size.height * 0.6)
-        fairy.run(flap)
+        fairy.run(flap, withKey: "flap")
         
         
         fairy.physicsBody = SKPhysicsBody(circleOfRadius: fairy.size.height / 2.0)
@@ -161,7 +173,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         
         fairy.physicsBody?.categoryBitMask = fairyCategory
         fairy.physicsBody?.collisionBitMask = worldCategory | stoneCategory
-        fairy.physicsBody?.contactTestBitMask = worldCategory | stoneCategory | dustCategory
+        fairy.physicsBody?.contactTestBitMask = worldCategory | stoneCategory | dustCategory | spikeBallCategory
         
         self.addChild(fairy)
         
@@ -201,31 +213,47 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         stonePair.position = CGPoint( x: self.frame.size.width + stoneTextureUp.size().width * 2, y: 0 )
         stonePair.zPosition = -10
         
-        let stoneUpHeight = stoneTextureUp.size().height * 2.0
-        // maxStoneY keeps the stone bottom flush with the ground; vary downward for difficulty
+        let stoneScale: CGFloat = 2.0
+        let stoneUpHeight = stoneTextureUp.size().height * stoneScale
+        
+        // Vary gap height while keeping the bottom stone near the ground.
         let maxStoneY = groundHeight + stoneUpHeight / 2
-        let variation = UInt32(self.frame.size.height / 4)
+        let variation = max(1, UInt32(self.frame.size.height / 4))
         let y = CGFloat(UInt32.random(in: 0..<variation)) + (maxStoneY - CGFloat(variation))
         
-        let stoneDown = SKSpriteNode(texture: stoneTextureDown)
-        stoneDown.setScale(2.0)
-        stoneDown.position = CGPoint(x: 0.0, y: y + stoneDown.size.height + verticalStoneGap)
+        let stoneUp = SKSpriteNode(texture: stoneTextureUp)
+        stoneUp.setScale(stoneScale)
+        stoneUp.position = CGPoint(x: 0.0, y: y)
+        stoneUp.physicsBody = SKPhysicsBody(rectangleOf: stoneUp.size)
+        stoneUp.physicsBody?.isDynamic = false
+        stoneUp.physicsBody?.categoryBitMask = stoneCategory
+        stoneUp.physicsBody?.contactTestBitMask = fairyCategory
+        stonePair.addChild(stoneUp)
         
+        let stoneDown = SKSpriteNode(texture: stoneTextureDown)
+        stoneDown.setScale(stoneScale)
+        stoneDown.position = CGPoint(x: 0.0, y: y + stoneDown.size.height + verticalStoneGap)
         stoneDown.physicsBody = SKPhysicsBody(rectangleOf: stoneDown.size)
         stoneDown.physicsBody?.isDynamic = false
         stoneDown.physicsBody?.categoryBitMask = stoneCategory
         stoneDown.physicsBody?.contactTestBitMask = fairyCategory
         stonePair.addChild(stoneDown)
         
-        let stoneUp = SKSpriteNode(texture: stoneTextureUp)
-        stoneUp.setScale(2.0)
-        stoneUp.position = CGPoint(x: 0.0, y: y)
-        
-        stoneUp.physicsBody = SKPhysicsBody(rectangleOf: stoneUp.size)
-        stoneUp.physicsBody?.isDynamic = false
-        stoneUp.physicsBody?.categoryBitMask = stoneCategory
-        stoneUp.physicsBody?.contactTestBitMask = fairyCategory
-        stonePair.addChild(stoneUp)
+        // Stack extra segments above the gap stone so obstacles always reach the top.
+        let segmentHeight = stoneDown.size.height
+        var fillY = stoneDown.position.y + segmentHeight / 2
+        while fillY < self.frame.size.height {
+            let filler = SKSpriteNode(texture: stoneTextureDown)
+            filler.setScale(stoneScale)
+            filler.anchorPoint = CGPoint(x: 0.5, y: 0)
+            filler.position = CGPoint(x: 0, y: fillY)
+            filler.physicsBody = SKPhysicsBody(rectangleOf: filler.size)
+            filler.physicsBody?.isDynamic = false
+            filler.physicsBody?.categoryBitMask = stoneCategory
+            filler.physicsBody?.contactTestBitMask = fairyCategory
+            stonePair.addChild(filler)
+            fillY += segmentHeight
+        }
         
         let contactNode = SKNode()
         contactNode.position = CGPoint( x: stoneDown.size.width + fairy.size.width / 2, y: self.frame.midY )
@@ -239,6 +267,36 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         stones.addChild(stonePair)
     }
     
+    /// Schedules the next staggered collectible spawn after a delay.
+    func scheduleNextCollectible(initialDelay: TimeInterval? = nil) {
+        removeAction(forKey: "spawnCollectible")
+        let delay = initialDelay ?? TimeInterval.random(in: collectibleSpawnDelayRange)
+        let wait = SKAction.wait(forDuration: delay)
+        let spawn = SKAction.run { [weak self] in self?.trySpawnCollectible() }
+        run(SKAction.sequence([wait, spawn]), withKey: "spawnCollectible")
+    }
+    
+    /// Spawns fairy dust or a spike ball, alternating types and skipping if
+    /// either collectible is still on screen.
+    func trySpawnCollectible() {
+        guard moving.speed > 0 else { return }
+        
+        if !dustClouds.children.isEmpty || !spikeBalls.children.isEmpty {
+            let retry = SKAction.wait(forDuration: 0.5)
+            let tryAgain = SKAction.run { [weak self] in self?.trySpawnCollectible() }
+            run(SKAction.sequence([retry, tryAgain]), withKey: "spawnCollectible")
+            return
+        }
+        
+        if spawnDustNext {
+            spawnDustCloud()
+        } else {
+            spawnSpikeBall()
+        }
+        spawnDustNext.toggle()
+        scheduleNextCollectible()
+    }
+    
     /// Creates a small fairy dust cloud at a random height. Collecting one makes
     /// the fairy glow for five seconds. Skips spawning if no clear position exists.
     func spawnDustCloud() {
@@ -249,7 +307,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         var chosenY: CGFloat?
         for _ in 0..<15 {
             let candidateY = CGFloat.random(in: minY...maxY)
-            if !dustPositionOverlapsObstacle(x: spawnX, y: candidateY) {
+            if !positionOverlapsObstacle(x: spawnX, y: candidateY, radius: 14, margin: 12) {
                 chosenY = candidateY
                 break
             }
@@ -296,10 +354,74 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         dustClouds.addChild(cloud)
     }
     
-    /// Returns true when a dust cloud at the given position would overlap a stone obstacle.
-    func dustPositionOverlapsObstacle(x cloudX: CGFloat, y cloudY: CGFloat) -> Bool {
-        let cloudRadius: CGFloat = 14
-        let margin: CGFloat = 12
+    /// Creates a rolling spike ball at a random height. Touching one turns the
+    /// fairy into a troll for five seconds without interrupting gameplay.
+    func spawnSpikeBall() {
+        let spawnX = self.frame.size.width + 20
+        let minY = groundHeight + 50
+        let maxY = self.frame.size.height - 50
+        let ballRadius: CGFloat = 16
+        
+        var chosenY: CGFloat?
+        for _ in 0..<15 {
+            let candidateY = CGFloat.random(in: minY...maxY)
+            if !positionOverlapsObstacle(x: spawnX, y: candidateY, radius: ballRadius, margin: 12) {
+                chosenY = candidateY
+                break
+            }
+        }
+        guard let finalY = chosenY else { return }
+        
+        let ball = makeSpikeBallNode(radius: ballRadius)
+        ball.position = CGPoint(x: spawnX, y: finalY)
+        ball.zPosition = -5
+        
+        let spin = SKAction.repeatForever(SKAction.rotate(byAngle: .pi * 2, duration: 2.5))
+        ball.run(spin)
+        
+        ball.physicsBody = SKPhysicsBody(circleOfRadius: ballRadius)
+        ball.physicsBody?.isDynamic = false
+        ball.physicsBody?.categoryBitMask = spikeBallCategory
+        ball.physicsBody?.contactTestBitMask = fairyCategory
+        ball.physicsBody?.collisionBitMask = 0
+        
+        ball.run(moveStonesAndRemove)
+        spikeBalls.addChild(ball)
+    }
+    
+    /// Builds a spiky ball from simple shapes so no extra art assets are needed.
+    func makeSpikeBallNode(radius: CGFloat) -> SKNode {
+        let ball = SKNode()
+        
+        let core = SKShapeNode(circleOfRadius: radius * 0.72)
+        core.fillColor = SKColor(red: 0.35, green: 0.35, blue: 0.38, alpha: 1.0)
+        core.strokeColor = SKColor(red: 0.15, green: 0.15, blue: 0.18, alpha: 1.0)
+        core.lineWidth = 2
+        ball.addChild(core)
+        
+        let spikeCount = 10
+        for i in 0..<spikeCount {
+            let angle = (CGFloat(i) / CGFloat(spikeCount)) * .pi * 2
+            let spikePath = CGMutablePath()
+            spikePath.move(to: CGPoint(x: 0, y: radius * 0.35))
+            spikePath.addLine(to: CGPoint(x: -radius * 0.18, y: -radius * 0.05))
+            spikePath.addLine(to: CGPoint(x: radius * 0.18, y: -radius * 0.05))
+            spikePath.closeSubpath()
+            
+            let spike = SKShapeNode(path: spikePath)
+            spike.fillColor = SKColor(red: 0.55, green: 0.55, blue: 0.6, alpha: 1.0)
+            spike.strokeColor = SKColor(red: 0.2, green: 0.2, blue: 0.22, alpha: 1.0)
+            spike.lineWidth = 1
+            spike.position = CGPoint(x: cos(angle) * radius * 0.55, y: sin(angle) * radius * 0.55)
+            spike.zRotation = angle - .pi / 2
+            ball.addChild(spike)
+        }
+        
+        return ball
+    }
+    
+    /// Returns true when a collectible at the given position would overlap a stone obstacle.
+    func positionOverlapsObstacle(x cloudX: CGFloat, y cloudY: CGFloat, radius cloudRadius: CGFloat, margin: CGFloat) -> Bool {
         let stoneWidth = stoneTextureUp.size().width * 2.0
         
         for stonePair in stones.children {
@@ -327,6 +449,42 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         return false
     }
     
+    /// Turns the fairy into a troll for five seconds. Gameplay continues normally.
+    /// Touching another spike ball while transformed resets the timer.
+    func applyTrollTransform() {
+        fairy.removeAction(forKey: "trollTransform")
+        isTroll = true
+        
+        fairy.removeAction(forKey: "flap")
+        fairy.setScale(fairyScale)
+        fairy.color = .white
+        fairy.colorBlendFactor = 0
+        
+        let trollAnim = SKAction.animate(with: [trollTexture1, trollTexture2], timePerFrame: 0.2)
+        fairy.run(SKAction.repeatForever(trollAnim), withKey: "trollFlap")
+        
+        let revert = SKAction.run { self.restoreFairyAppearance() }
+        fairy.run(SKAction.sequence([SKAction.wait(forDuration: 5.0), revert]), withKey: "trollTransform")
+    }
+    
+    func restoreFairyAppearance() {
+        isTroll = false
+        fairy.removeAction(forKey: "trollFlap")
+        fairy.zRotation = 0
+        fairy.setScale(fairyScale)
+        
+        if isInvincible {
+            fairy.color = SKColor(red: 1.0, green: 0.95, blue: 0.7, alpha: 1.0)
+            fairy.colorBlendFactor = 0.55
+        } else {
+            fairy.color = .white
+            fairy.colorBlendFactor = 0
+        }
+        
+        let anim = SKAction.animate(with: [fairyTexture1, fairyTexture2], timePerFrame: 0.2)
+        fairy.run(SKAction.repeatForever(anim), withKey: "flap")
+    }
+    
     /// Applies a glowing aura to the fairy for five seconds. While glowing the
     /// fairy is invincible and bounces off obstacles. Collecting another dust
     /// cloud while glowing resets the timer.
@@ -334,6 +492,11 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         fairy.removeAction(forKey: "fairyGlow")
         fairy.childNode(withName: "glow")?.removeFromParent()
         isInvincible = true
+        
+        if !isTroll {
+            fairy.color = SKColor(red: 1.0, green: 0.95, blue: 0.7, alpha: 1.0)
+            fairy.colorBlendFactor = 0.55
+        }
         
         let glowRadius = fairy.size.height * 0.55
         let glow = SKShapeNode(circleOfRadius: glowRadius)
@@ -351,14 +514,16 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         ]))
         glow.run(pulse, withKey: "pulse")
         
-        fairy.color = SKColor(red: 1.0, green: 0.95, blue: 0.7, alpha: 1.0)
-        fairy.colorBlendFactor = 0.55
-        
         let removeGlow = SKAction.run {
             glow.removeFromParent()
-            self.fairy.colorBlendFactor = 0
-            self.fairy.color = .white
             self.isInvincible = false
+            if self.isTroll {
+                self.fairy.color = .white
+                self.fairy.colorBlendFactor = 0
+            } else {
+                self.fairy.colorBlendFactor = 0
+                self.fairy.color = .white
+            }
         }
         fairy.run(SKAction.sequence([SKAction.wait(forDuration: 5.0), removeGlow]), withKey: "fairyGlow")
     }
@@ -400,11 +565,18 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         
         moving.speed = 0
         backgroundMoving.speed = 0
+        removeAction(forKey: "spawnCollectible")
         isInvincible = false
+        isTroll = false
         fairy.removeAction(forKey: "fairyGlow")
+        fairy.removeAction(forKey: "trollTransform")
+        fairy.removeAction(forKey: "trollFlap")
+        fairy.removeAction(forKey: "flap")
         fairy.childNode(withName: "glow")?.removeFromParent()
         fairy.colorBlendFactor = 0
         fairy.color = .white
+        fairy.setScale(fairyScale)
+        fairy.zRotation = 0
         
         fairy.physicsBody?.collisionBitMask = worldCategory
         fairy.run(SKAction.rotate(byAngle: .pi * fairy.position.y * 0.01, duration: 1), completion: { self.fairy.speed = 0 })
@@ -450,8 +622,10 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     /// so it pitches up while rising and down while falling.
     override func update(_ currentTime: TimeInterval) {
         let dy = fairy.physicsBody!.velocity.dy
-        let value = dy * (dy < 0 ? 0.003 : 0.001)
-        fairy.zRotation = min( max(-1, value), 0.5 )
+        if !isTroll {
+            let value = dy * (dy < 0 ? 0.003 : 0.001)
+            fairy.zRotation = min( max(-1, value), 0.5 )
+        }
         
         if moving.speed > 0 && fairyIsOffScreen() {
             die()
@@ -467,6 +641,10 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
                 let dustNode = (contact.bodyA.categoryBitMask & dustCategory) == dustCategory ? contact.bodyA.node : contact.bodyB.node
                 dustNode?.removeFromParent()
                 applyFairyGlow()
+            } else if ( contact.bodyA.categoryBitMask & spikeBallCategory ) == spikeBallCategory || ( contact.bodyB.categoryBitMask & spikeBallCategory ) == spikeBallCategory {
+                let spikeNode = (contact.bodyA.categoryBitMask & spikeBallCategory) == spikeBallCategory ? contact.bodyA.node : contact.bodyB.node
+                spikeNode?.removeFromParent()
+                applyTrollTransform()
             } else if ( contact.bodyA.categoryBitMask & scoreCategory ) == scoreCategory || ( contact.bodyB.categoryBitMask & scoreCategory ) == scoreCategory {
                 // Fairy has contact with score entity
                 score += 1
