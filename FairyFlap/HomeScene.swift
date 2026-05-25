@@ -36,23 +36,7 @@ class HomeScene: SKScene {
     /// Creates the parallax scrolling ground (foreground) and forest (background).
     /// The forest scrolls at 35% speed to give a sense of depth.
     private func setupScrollingBackground() {
-        let groundTexture = SKTexture(imageNamed: "land")
-        groundTexture.filteringMode = .nearest
-        let groundH = groundTexture.size().height * 2.0
-
-        let moveGround = SKAction.moveBy(x: -groundTexture.size().width * 2.0, y: 0,
-                                         duration: TimeInterval(0.02 * groundTexture.size().width * 2.0))
-        let resetGround = SKAction.moveBy(x: groundTexture.size().width * 2.0, y: 0, duration: 0)
-        let groundLoop = SKAction.repeatForever(SKAction.sequence([moveGround, resetGround]))
-
-        let tileCount = 2 + Int(self.frame.size.width / (groundTexture.size().width * 2))
-        for i in 0..<tileCount {
-            let sprite = SKSpriteNode(texture: groundTexture)
-            sprite.setScale(2.0)
-            sprite.position = CGPoint(x: CGFloat(i) * sprite.size.width, y: sprite.size.height / 2.0)
-            sprite.run(groundLoop)
-            moving.addChild(sprite)
-        }
+        let groundH = addScrollingGrass(to: moving)
 
         let forestTexture = SKTexture(imageNamed: "forest")
         forestTexture.filteringMode = .nearest

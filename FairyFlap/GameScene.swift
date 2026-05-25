@@ -78,23 +78,8 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         spikeBalls = SKNode()
         moving.addChild(spikeBalls)
         
-        // ground (foreground — scrolls at full speed)
-        let groundTexture = SKTexture(imageNamed: "land")
-        groundTexture.filteringMode = .nearest // shorter form for SKTextureFilteringMode.Nearest
-        groundHeight = groundTexture.size().height * 2.0
-        
-        let moveGroundSprite = SKAction.moveBy(x: -groundTexture.size().width * 2.0, y: 0, duration: TimeInterval(0.02 * groundTexture.size().width * 2.0))
-        let resetGroundSprite = SKAction.moveBy(x: groundTexture.size().width * 2.0, y: 0, duration: 0.0)
-        let moveGroundSpritesForever = SKAction.repeatForever(SKAction.sequence([moveGroundSprite,resetGroundSprite]))
-        
-        for i in 0 ..< 2 + Int(self.frame.size.width / ( groundTexture.size().width * 2 )) {
-            let i = CGFloat(i)
-            let sprite = SKSpriteNode(texture: groundTexture)
-            sprite.setScale(2.0)
-            sprite.position = CGPoint(x: i * sprite.size.width, y: sprite.size.height / 2.0)
-            sprite.run(moveGroundSpritesForever)
-            moving.addChild(sprite)
-        }
+        // Grass (foreground — scrolls at full speed)
+        groundHeight = addScrollingGrass(to: moving)
         
         // forest background (scrolls slower via backgroundMoving.speed)
         let forestTexture = SKTexture(imageNamed: "forest")
@@ -179,8 +164,8 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         
         // create the ground
         let ground = SKNode()
-        ground.position = CGPoint(x: 0, y: groundTexture.size().height)
-        ground.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: self.frame.size.width, height: groundTexture.size().height * 2.0))
+        ground.position = CGPoint(x: 0, y: groundHeight / 2.0)
+        ground.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: self.frame.size.width, height: groundHeight))
         ground.physicsBody?.isDynamic = false
         ground.physicsBody?.categoryBitMask = worldCategory
         self.addChild(ground)
@@ -288,34 +273,78 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
             return
         }
         
+        let spawned: Bool
         if spawnDustNext {
-            spawnDustCloud()
+            spawned = spawnDustCloud()
         } else {
-            spawnSpikeBall()
+            spawned = spawnSpikeBall()
         }
         spawnDustNext.toggle()
-        scheduleNextCollectible()
+        if spawned {
+            scheduleNextCollectible()
+        } else {
+            let retry = SKAction.wait(forDuration: 0.5)
+            let tryAgain = SKAction.run { [weak self] in self?.trySpawnCollectible() }
+            run(SKAction.sequence([retry, tryAgain]), withKey: "spawnCollectible")
+        }
     }
     
-    /// Creates a small fairy dust cloud at a random height. Collecting one makes
-    /// the fairy glow for five seconds. Skips spawning if no clear position exists.
-    func spawnDustCloud() {
-        let spawnX = self.frame.size.width + 20
-        let minY = groundHeight + 50
-        let maxY = self.frame.size.height - 50
-        
-        var chosenY: CGFloat?
-        for _ in 0..<15 {
-            let candidateY = CGFloat.random(in: minY...maxY)
-            if !positionOverlapsObstacle(x: spawnX, y: candidateY, radius: 14, margin: 12) {
-                chosenY = candidateY
-                break
+    /// Returns the horizontal center and vertical bounds of the flyable gap in a stone pair.
+    func gapBounds(for stonePair: SKNode) -> (x: CGFloat, bottom: CGFloat, top: CGFloat)? {
+        var bottomStone: SKSpriteNode?
+        for case let stone as SKSpriteNode in stonePair.children {
+            guard stone.physicsBody?.categoryBitMask == stoneCategory else { continue }
+            if bottomStone == nil || stone.position.y < bottomStone!.position.y {
+                bottomStone = stone
             }
         }
-        guard let finalY = chosenY else { return }
+        guard let bottom = bottomStone else { return nil }
+        
+        var gapLipStone: SKSpriteNode?
+        for case let stone as SKSpriteNode in stonePair.children {
+            guard stone.physicsBody?.categoryBitMask == stoneCategory else { continue }
+            if stone.position.y > bottom.position.y {
+                if gapLipStone == nil || stone.position.y < gapLipStone!.position.y {
+                    gapLipStone = stone
+                }
+            }
+        }
+        guard let lip = gapLipStone else { return nil }
+        
+        let gapBottom = stonePair.position.y + bottom.position.y + bottom.size.height / 2
+        let gapTop = stonePair.position.y + lip.position.y - lip.size.height / 2
+        guard gapTop > gapBottom else { return nil }
+        
+        return (stonePair.position.x, gapBottom, gapTop)
+    }
+    
+    /// Picks a spawn point inside an upcoming stone gap ahead of the fairy.
+    func pickCollectibleSpawnPosition(radius: CGFloat, margin: CGFloat = 12) -> CGPoint? {
+        let stoneWidth = stoneTextureUp.size().width * 2.0
+        let padding = radius + margin
+        var candidates: [(x: CGFloat, bottom: CGFloat, top: CGFloat)] = []
+        
+        for case let stonePair as SKNode in stones.children {
+            guard let gap = gapBounds(for: stonePair) else { continue }
+            guard gap.top - gap.bottom >= padding * 2 else { continue }
+            guard stonePair.position.x > fairy.position.x else { continue }
+            guard stonePair.position.x < frame.size.width + stoneWidth * 2 else { continue }
+            candidates.append(gap)
+        }
+        
+        guard let gap = candidates.randomElement() else { return nil }
+        let y = CGFloat.random(in: gap.bottom + padding ... gap.top - padding)
+        return CGPoint(x: gap.x, y: y)
+    }
+    
+    /// Creates a small fairy dust cloud inside a stone gap. Collecting one makes
+    /// the fairy glow for five seconds.
+    @discardableResult
+    func spawnDustCloud() -> Bool {
+        guard let position = pickCollectibleSpawnPosition(radius: 14) else { return false }
         
         let cloud = SKNode()
-        cloud.position = CGPoint(x: spawnX, y: finalY)
+        cloud.position = position
         cloud.zPosition = -5
         
         let dustColors: [SKColor] = [
@@ -352,28 +381,18 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         
         cloud.run(moveStonesAndRemove)
         dustClouds.addChild(cloud)
+        return true
     }
     
-    /// Creates a rolling spike ball at a random height. Touching one turns the
-    /// fairy into a unicorn for five seconds without interrupting gameplay.
-    func spawnSpikeBall() {
-        let spawnX = self.frame.size.width + 20
-        let minY = groundHeight + 50
-        let maxY = self.frame.size.height - 50
+    /// Creates a rolling spike ball inside a stone gap. Touching one turns the
+    /// fairy into a unicorn for ten seconds without interrupting gameplay.
+    @discardableResult
+    func spawnSpikeBall() -> Bool {
         let ballRadius: CGFloat = 16
-        
-        var chosenY: CGFloat?
-        for _ in 0..<15 {
-            let candidateY = CGFloat.random(in: minY...maxY)
-            if !positionOverlapsObstacle(x: spawnX, y: candidateY, radius: ballRadius, margin: 12) {
-                chosenY = candidateY
-                break
-            }
-        }
-        guard let finalY = chosenY else { return }
+        guard let position = pickCollectibleSpawnPosition(radius: ballRadius) else { return false }
         
         let ball = makeSpikeBallNode(radius: ballRadius)
-        ball.position = CGPoint(x: spawnX, y: finalY)
+        ball.position = position
         ball.zPosition = -5
         
         let spin = SKAction.repeatForever(SKAction.rotate(byAngle: .pi * 2, duration: 2.5))
@@ -387,6 +406,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         
         ball.run(moveStonesAndRemove)
         spikeBalls.addChild(ball)
+        return true
     }
     
     /// Builds a spiky ball from simple shapes so no extra art assets are needed.
@@ -420,36 +440,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         return ball
     }
     
-    /// Returns true when a collectible at the given position would overlap a stone obstacle.
-    func positionOverlapsObstacle(x cloudX: CGFloat, y cloudY: CGFloat, radius cloudRadius: CGFloat, margin: CGFloat) -> Bool {
-        let stoneWidth = stoneTextureUp.size().width * 2.0
-        
-        for stonePair in stones.children {
-            let pairX = stonePair.position.x
-            
-            if abs(cloudX - pairX) > stoneWidth / 2 + cloudRadius + margin {
-                continue
-            }
-            
-            for case let stone as SKSpriteNode in stonePair.children {
-                guard stone.physicsBody?.categoryBitMask == stoneCategory else { continue }
-                
-                let stoneCenterY = stonePair.position.y + stone.position.y
-                let halfW = stone.size.width / 2
-                let halfH = stone.size.height / 2
-                
-                let dx = abs(cloudX - pairX)
-                let dy = abs(cloudY - stoneCenterY)
-                
-                if dx < halfW + cloudRadius + margin && dy < halfH + cloudRadius + margin {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-    
-    /// Turns the fairy into a flying unicorn for five seconds. Gameplay continues normally.
+    /// Turns the fairy into a flying unicorn for ten seconds. Gameplay continues normally.
     /// Touching another spike ball while transformed resets the timer.
     func applyUnicornTransform() {
         fairy.removeAction(forKey: "unicornTransform")
@@ -464,13 +455,12 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         fairy.run(SKAction.repeatForever(unicornAnim), withKey: "unicornFlap")
         
         let revert = SKAction.run { self.restoreFairyAppearance() }
-        fairy.run(SKAction.sequence([SKAction.wait(forDuration: 5.0), revert]), withKey: "unicornTransform")
+        fairy.run(SKAction.sequence([SKAction.wait(forDuration: 10.0), revert]), withKey: "unicornTransform")
     }
     
     func restoreFairyAppearance() {
         isUnicorn = false
         fairy.removeAction(forKey: "unicornFlap")
-        fairy.zRotation = 0
         fairy.setScale(fairyScale)
         
         if isInvincible {
@@ -485,9 +475,9 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         fairy.run(SKAction.repeatForever(anim), withKey: "flap")
     }
     
-    /// Applies a glowing aura to the fairy for five seconds. While glowing the
-    /// fairy is invincible and bounces off obstacles. Collecting another dust
-    /// cloud while glowing resets the timer.
+    /// Applies a glowing aura for five seconds. While glowing the character is
+    /// invincible and bounces off obstacles. Collecting another dust cloud
+    /// while glowing resets the timer.
     func applyFairyGlow() {
         fairy.removeAction(forKey: "fairyGlow")
         fairy.childNode(withName: "glow")?.removeFromParent()
@@ -517,10 +507,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         let removeGlow = SKAction.run {
             glow.removeFromParent()
             self.isInvincible = false
-            if self.isUnicorn {
-                self.fairy.color = .white
-                self.fairy.colorBlendFactor = 0
-            } else {
+            if !self.isUnicorn {
                 self.fairy.colorBlendFactor = 0
                 self.fairy.color = .white
             }
@@ -622,10 +609,8 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     /// so it pitches up while rising and down while falling.
     override func update(_ currentTime: TimeInterval) {
         let dy = fairy.physicsBody!.velocity.dy
-        if !isUnicorn {
-            let value = dy * (dy < 0 ? 0.003 : 0.001)
-            fairy.zRotation = min( max(-1, value), 0.5 )
-        }
+        let value = dy * (dy < 0 ? 0.003 : 0.001)
+        fairy.zRotation = min( max(-1, value), 0.5 )
         
         if moving.speed > 0 && fairyIsOffScreen() {
             die()
@@ -661,5 +646,39 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
                 die()
             }
         }
+    }
+}
+
+extension SKScene {
+    /// Tiles and scrolls the grass foreground. Returns the display height of one grass strip.
+    @discardableResult
+    func addScrollingGrass(to parent: SKNode, scale: CGFloat = 2.0) -> CGFloat {
+        let texture = SKTexture(imageNamed: "grass")
+        texture.filteringMode = .nearest
+
+        let tileWidth = texture.size().width * scale
+        let tileHeight = texture.size().height * scale
+
+        let scrollNode = SKNode()
+        scrollNode.name = "grassScroll"
+        parent.addChild(scrollNode)
+
+        let tileCount = Int(ceil(frame.size.width / tileWidth)) + 2
+        for i in 0 ..< tileCount {
+            let sprite = SKSpriteNode(texture: texture)
+            sprite.anchorPoint = .zero
+            sprite.setScale(scale)
+            sprite.position = CGPoint(x: CGFloat(i) * tileWidth, y: 0)
+            scrollNode.addChild(sprite)
+        }
+
+        let scrollDuration = TimeInterval(0.02 * tileWidth)
+        let scroll = SKAction.moveBy(x: -tileWidth, y: 0, duration: scrollDuration)
+        let wrap = SKAction.run { [weak scrollNode] in
+            scrollNode?.position.x += tileWidth
+        }
+        scrollNode.run(SKAction.repeatForever(SKAction.sequence([scroll, wrap])))
+
+        return tileHeight
     }
 }

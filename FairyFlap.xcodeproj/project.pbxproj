@@ -15,12 +15,12 @@
 		4374520B193D163800654986 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4374520A193D163800654986 /* Images.xcassets */; };
 		43745217193D163800654986 /* FairyFlapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43745216193D163800654986 /* FairyFlapTests.swift */; };
 		437A3DBA193D326A00909BA0 /* fairy.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 437A3DB9193D326A00909BA0 /* fairy.atlas */; };
-		EE000001EE000001EE000001 /* unicorn.atlas in Resources */ = {isa = PBXBuildFile; fileRef = EE000002EE000002EE000002 /* unicorn.atlas */; };
 		4FBF36652FBFBDB3000B889A /* fairy.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF36642FBFBDB3000B889A /* fairy.png */; };
 		4FBF36672FBFC012000B889A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF36662FBFC012000B889A /* Assets.xcassets */; };
 		6E1623E01E24FC4E00FB2C72 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E1623DF1E24FC4E00FB2C72 /* LaunchScreen.storyboard */; };
 		AA000001AA000001AA000001 /* HomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000002AA000002AA000002 /* HomeScene.swift */; };
 		BB000001BB000001BB000001 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000002BB000002BB000002 /* SceneDelegate.swift */; };
+		EE000001EE000001EE000001 /* unicorn.atlas in Resources */ = {isa = PBXBuildFile; fileRef = EE000002EE000002EE000002 /* unicorn.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,13 +46,13 @@
 		43745215193D163800654986 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43745216193D163800654986 /* FairyFlapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FairyFlapTests.swift; sourceTree = "<group>"; };
 		437A3DB9193D326A00909BA0 /* fairy.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = fairy.atlas; sourceTree = "<group>"; };
-		EE000002EE000002EE000002 /* unicorn.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = unicorn.atlas; sourceTree = "<group>"; };
 		4FBF36642FBFBDB3000B889A /* fairy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fairy.png; sourceTree = "<group>"; };
 		4FBF36662FBFC012000B889A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FBF36682FBFC0D3000B889A /* FairyFlap.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = FairyFlap.xctestplan; sourceTree = "<group>"; };
 		6E1623DF1E24FC4E00FB2C72 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AA000002AA000002AA000002 /* HomeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
 		BB000002BB000002BB000002 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		EE000002EE000002EE000002 /* unicorn.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = unicorn.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -406,7 +406,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2X5XS2M8C2;
 				INFOPLIST_FILE = FairyFlap/Info.plist;
@@ -417,7 +417,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeffhedrick.FairyFlap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -435,7 +435,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2X5XS2M8C2;
 				INFOPLIST_FILE = FairyFlap/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Fairy Flap";
@@ -445,7 +445,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeffhedrick.FairyFlap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
